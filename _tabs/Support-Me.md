@@ -22,8 +22,8 @@ If you are **not an indian**, you can donate me on `buymeacoffee`.*Thankyou in A
 
 You can `donate` me via `UPI/Paytm`
 
-## Paytm 
+### Paytm 
 **9878187739**
 
-## UPI
+### UPI
 **9878187739@paytm**
