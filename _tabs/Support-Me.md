@@ -26,4 +26,7 @@ You can `donate` me via `UPI/Paytm`
 **9878187739**
 
 ### UPI
-**9878187739@paytm**
+**9878187739@paytm**.
+
+*Thankyou in Advance.*
+
