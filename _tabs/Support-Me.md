@@ -16,5 +16,5 @@ If you liked my `blogs/writeups` and wish to support me, please feel free to `do
 
 If you are **not an indian**, you can donate me on `buymeacoffee`.*Thankyou in Advance.*
 
-[![](/pulkittalwar/assets/img/sample/buymeacoffee.png)](https://www.buymeacoffee.com/pulkittalwar26)
+[![](https://cdn.buymeacoffee.com/buttons/arial-black.png)](https://www.buymeacoffee.com/pulkittalwar26)
 
