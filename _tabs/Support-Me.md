@@ -10,5 +10,12 @@ order: 4
 # MIT License
 ---
 
+If you liked my `blogs/writeups` and wish to support me, please feel free to `donate`.
 
-> **Note**: Add Markdown syntax content to file `_tabs/about.md` and it will show up on this page.
+# Non-Indian
+
+If you are **not an indian**, you can donate me on `buymeacoffee`.*Thankyou in Advance.*
+
+[![](/pulkittalwar/assets/img/sample/buymeacoffee.png)[1]
+[1]: https://www.buymeacoffee.com/pulkittalwar26
+
