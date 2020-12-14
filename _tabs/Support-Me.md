@@ -1,5 +1,5 @@
 ---
-title: About
+title: Support Me
 icon: fas fa-info
 order: 4
 
