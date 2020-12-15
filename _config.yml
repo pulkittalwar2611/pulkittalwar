@@ -154,9 +154,6 @@ defaults:
         -
           label: Categories
           url: /tabs/categories/
-        -
-          label: profile
-          url: /profile
   -
     scope:
       path: ''
