@@ -2,6 +2,8 @@ source "https://rubygems.org"
 
 gem "jekyll", ">= 4.0.0", "< 5.0"
 
+gem "bcrypt"
+
 # plugins
 group :jekyll_plugins do
   gem "jekyll-paginate"
