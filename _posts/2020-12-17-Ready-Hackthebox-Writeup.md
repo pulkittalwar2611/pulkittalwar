@@ -3,7 +3,7 @@ title: Ready Hackthebox Writeup
 date: 2020-12-17 09:00:00 +0800
 categories: [Hackthebox, Active]
 tags: []     # TAG names should always be lowercase
-image: /assets/img/ready-hackthebox/ready-hackthebox/ready-pic.jpg
+image: /assets/img/ready-hackthebox/ready-pic.jpg
 subtitle: JHBDOcubeoveiubo
 ---
 
