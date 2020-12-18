@@ -1,0 +1,53 @@
+I"Q<h1 id="introductionluanne">Introduction@Luanne:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Ready</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.220</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Linux</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://app.hackthebox.eu/users/27897">bertolis</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>28th November 2020</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li>Logging in <code class="language-plaintext highlighter-rouge">Port 5080</code>, which is a <code class="language-plaintext highlighter-rouge">gitlab</code> signup/signin page.</li>
+  <li>Checking the gitlab version, which is <code class="language-plaintext highlighter-rouge">11.4.7</code></li>
+  <li>Looking for vulnerabilities for that version, found <code class="language-plaintext highlighter-rouge">SSRF - redis - RCE</code> in gitlab 11.4.7.</li>
+  <li>Exploiting the <code class="language-plaintext highlighter-rouge">vulnerability</code> and getting the <code class="language-plaintext highlighter-rouge">reverse shell</code>.</li>
+  <li>For <code class="language-plaintext highlighter-rouge">Privilege escalation</code>, found a password file and logged in as <code class="language-plaintext highlighter-rouge">root</code> in the container.</li>
+  <li><strong>Mounting</strong> the drives present in <code class="language-plaintext highlighter-rouge">/dev</code> of the container, to get the <code class="language-plaintext highlighter-rouge">Root Flag</code>.</li>
+</ul>
+:ET
