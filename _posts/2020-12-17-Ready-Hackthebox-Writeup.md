@@ -92,7 +92,7 @@ After `Intercepting` the request, let's replace `import_url` parameter by the fo
 /ssrf.git
 }
 ```
-Make sure to check the [POC](https://github.com/jas502n/gitlab-SSRF-redis-RCE) for `RCE via SSRF`, I got the above payload after making some changes. (*Make sure you check the gaps specified in the POC, or else the playload won't work **It didn't in my case** .*)
+Make sure to check the [POC](https://github.com/jas502n/gitlab-SSRF-redis-RCE) for `RCE via SSRF`, I got the above payload after making some changes. (*Make sure you check the gaps specified in the POC, or else the playload won't work **It didn't work in my case** .*)
 
 ___
 ![](/assets/img/ready-hackthebox/final-req-16.png)
@@ -102,12 +102,12 @@ After listening on port 1234, I got a `Reverse shell` as `git`, converted it to 
 ___
 ![](/assets/img/ready-hackthebox/tty-shell-19.png)
 
-Got `User Shell`
+Got `User Flag`.
 
 ___
-![](/assets/img/ready-hackthebox/got-user-text-20.png)
+![](/assets/img/ready-hackthebox/got-user-txt-20.png)
 
-After getting `user flag`, For `Privilege Escalation` I started with manual enumeration and got a `backup folder` in `/opt` directory.
+For `Privilege Escalation` I started with manual enumeration and got a `backup folder` in `/opt` directory.
 It contained 3 files i.e. 
 1. gitlab-secrets.json
 2. gitlab.rb
@@ -118,7 +118,7 @@ After having a look at each of these files, I found that `gitlab.rb` contained s
 ___
 ![](/assets/img/ready-hackthebox/few-passwords-23.png)
 
-Simultaneously trying each password, `wW59U!ZKMbG9+*#h` one worked as **sudo su**.
+Simultaneously trying each password, `wW59U!ZKMbG9+*#h` one worked for **sudo su**.
 
 ___
 ![](/assets/img/ready-hackthebox/became-root-but-not-root-text-24.png)
@@ -126,9 +126,9 @@ ___
 After becoming root, I tried finding out the `root.txt` but there wasn't any because we are in a **container** as *root*.
 
 ___
-![](/assets/img/ready-hackthebox/not-root-text.png)
+![](/assets/img/ready-hackthebox/no-root-text.png)
 
-After reading this blog on [Unprivileged container builds](https://kinvolk.io/blog/2018/04/towards-unprivileged-container-builds/), I tried the `new mount` technique, but before proceeding further I need to know the drives which are present in `/dev` directory with the name of `sda`.
+After reading this blog on [Unprivileged container builds](https://kinvolk.io/blog/2018/04/towards-unprivileged-container-builds/), I tried the `new mount` technique, but before proceeding further I cheked which drives are present in `/dev` directory with the name of `sda`.
 
 ___
 ![](/assets/img/ready-hackthebox/dev-sda-command-25.png)
