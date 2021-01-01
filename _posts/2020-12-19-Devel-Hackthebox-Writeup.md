@@ -137,7 +137,7 @@ ___
 Now Running the exploit and listenig on `nc`.
 
 ___
-![](/assets/img/devel-hackthebox/got-shell-10.png)
+![](/assets/img/devel-hackthebox/got-root-18.png)
 
 Checking `whoami`.
 
