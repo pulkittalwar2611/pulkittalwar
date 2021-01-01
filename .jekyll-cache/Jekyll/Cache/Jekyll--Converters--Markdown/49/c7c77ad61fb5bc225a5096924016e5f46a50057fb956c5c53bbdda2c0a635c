@@ -1,0 +1,43 @@
+I"Ø<h1 id="introductionsecnotes">Introduction@SecNotes:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>SecNotes</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.97</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Windows</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/home/users/profile/4935">0xdf</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>15th March 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+:ET
