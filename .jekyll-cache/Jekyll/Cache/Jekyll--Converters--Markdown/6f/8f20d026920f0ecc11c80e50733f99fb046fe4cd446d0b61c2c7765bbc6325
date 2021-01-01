@@ -1,0 +1,79 @@
+I"
+<h1 id="introductiondevel">Introduction@Devel:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Devel</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.5</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Windows</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Easy</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/home/users/profile/1">ch4p</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>15th March 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li>logging in as <code class="language-plaintext highlighter-rouge">anonymous</code> user in <code class="language-plaintext highlighter-rouge">ftp port</code>.</li>
+  <li>Uploading an aspx <code class="language-plaintext highlighter-rouge">shell</code> via ftp and accessing it on <code class="language-plaintext highlighter-rouge">port 80</code> to get a reverse shell.</li>
+  <li>Using <code class="language-plaintext highlighter-rouge">windows exploit suggester</code> for escalating privileges.</li>
+  <li>using <code class="language-plaintext highlighter-rouge">MS10-059.exe</code> got <code class="language-plaintext highlighter-rouge">Root Privileges</code>.</li>
+</ul>
+
+<h1 id="starting">Starting:~$</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>I have used <strong>nmapAutomator</strong> , which keeps the scanning fast and reduces effort.<em>(Not recommended in real life scenarios).</em></p>
+
+<p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
+
+<hr />
+<p><img src="/assets/img/devel-hackthebox/nmap-scan-1.png" alt="" /></p>
+
+<p>Let’s Check port <code class="language-plaintext highlighter-rouge">80</code>, which is a <strong>Microsoft IIS httpd 7.5</strong> server.</p>
+
+<hr />
+<p><img src="/assets/img/devel-hackthebox/port-80-2.png" alt="" /></p>
+
+<p>I tried <code class="language-plaintext highlighter-rouge">gobuster</code> for directory search, but it didn’t worked out for me.</p>
+
+<p><strong>Command</strong> : <em>gobuster dir -u http://10.10.10.5/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -t 100</em></p>
+
+<p>where   <strong>t : threads</strong>
+        <strong>| u : URL</strong>
+        <strong>| w : wordlists</strong></p>
+
+<hr />
+<p><img src="/assets/img/devel-hackthebox/gobuster-3.png" alt="" /></p>
+:ET
