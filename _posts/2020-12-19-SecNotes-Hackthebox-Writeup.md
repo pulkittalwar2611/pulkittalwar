@@ -2,7 +2,7 @@
 title: SecNotes Hackthebox Writeup
 date: 2020-12-19 09:00:00 +0800
 categories: [Hackthebox, Retired]
-tags: [windows,systeminfo,]     # TAG names should always be lowercase
+tags: [windows,systeminfo,wsl,linux subsystem,smb,smb enumeration,smbclient,php]     # TAG names should always be lowercase
 image: /assets/img/secnotes-hackthebox/secnotes-pic.png
 subtitle: JHBDOcubeoveiubo
 ---
