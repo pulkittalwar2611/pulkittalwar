@@ -5,7 +5,7 @@ categories: [Hackthebox, Active]
 tags: [bsd,doas,hashcat,cracking,hashes,ssh,reverse shell,lua,gobuster,directory enumeration,netbsd,luanne,hackthebox,easy]     # TAG names should always be lowercase
 image: /assets/img/luanne-hackthebox/luanne-pic.png
 layout: secret_post
-key: hello
+key: "hello"
 subtitle: JHBDOcubeoveiubo
 ---
 
