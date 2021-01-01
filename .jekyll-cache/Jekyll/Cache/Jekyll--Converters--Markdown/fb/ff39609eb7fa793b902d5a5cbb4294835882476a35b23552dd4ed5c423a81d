@@ -1,4 +1,4 @@
-I"¹<h1 id="introductiondevel">Introduction@Devel:~$</h1>
+I"¾<h1 id="introductiondevel">Introduction@Devel:~$</h1>
 
 <table>
   <thead>
@@ -152,7 +152,7 @@
 <p>When I tried escalating privileges, it threw me an <code class="language-plaintext highlighter-rouge">error</code> of <em>This program cannot be run in DOS mode.</em></p>
 
 <hr />
-<p><img src="/assets/img/devel-hackthebox/cannot-run-in-DOS-mode-16" alt="" /></p>
+<p><img src="/assets/img/devel-hackthebox/cannot-run-in-DOS-mode-16.png" alt="" /></p>
 
 <p>I googled about this and found <a href="https://superuser.com/questions/476808/i-am-getting-this-program-cannot-be-run-in-dos-mode-in-windows-xp">this</a>.</p>
 
@@ -166,7 +166,7 @@
 <hr />
 <p><img src="/assets/img/devel-hackthebox/got-shell-10.png" alt="" /></p>
 
-<p>Checking <code class="language-plaintext highlighter-rouge">whoami</code></p>
+<p>Checking <code class="language-plaintext highlighter-rouge">whoami</code>.</p>
 
 <hr />
 <p><img src="/assets/img/devel-hackthebox/whoami-image-final.png" alt="" /></p>

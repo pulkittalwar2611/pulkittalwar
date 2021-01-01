@@ -125,7 +125,7 @@ ___
 When I tried escalating privileges, it threw me an `error` of *This program cannot be run in DOS mode.*
 
 ___
-![](/assets/img/devel-hackthebox/cannot-run-in-DOS-mode-16)
+![](/assets/img/devel-hackthebox/cannot-run-in-DOS-mode-16.png)
 
 I googled about this and found [this](https://superuser.com/questions/476808/i-am-getting-this-program-cannot-be-run-in-dos-mode-in-windows-xp).
 
@@ -139,7 +139,7 @@ Now Running the exploit and listenig on `nc`.
 ___
 ![](/assets/img/devel-hackthebox/got-shell-10.png)
 
-Checking `whoami`
+Checking `whoami`.
 
 ___
 ![](/assets/img/devel-hackthebox/whoami-image-final.png)
