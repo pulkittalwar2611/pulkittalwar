@@ -127,7 +127,7 @@ When I tried escalating privileges, it threw me an `error` of *This program cann
 ___
 ![](/assets/img/devel-hackthebox/cannot-run-in-DOS-mode-16.png)
 
-I googled about this and found [this](https://superuser.com/questions/476808/i-am-getting-this-program-cannot-be-run-in-dos-mode-in-windows-xp).
+I googled about it and found [this](https://superuser.com/questions/476808/i-am-getting-this-program-cannot-be-run-in-dos-mode-in-windows-xp).
 
 Now sending the executable again but before that switching the `ftp` mode to `binary` first.
 
