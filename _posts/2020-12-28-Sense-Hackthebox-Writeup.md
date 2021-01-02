@@ -2,7 +2,7 @@
 title: Sense Hackthebox Writeup
 date: 2020-12-28 09:00:00 +0800
 categories: [Hackthebox, Retired]
-tags: [linux,pfsense,dirbuster,pfsense 2.1.3]     # TAG names should always be lowercase
+tags: [FreeBSD,pfsense,dirbuster,pfsense 2.1.3]     # TAG names should always be lowercase
 image: /assets/img/sense-hackthebox/sense-pic.png
 subtitle: JHBDOcubeoveiubo
 ---
