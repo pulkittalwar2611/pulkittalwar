@@ -1,4 +1,4 @@
-I"`<h1 id="introductionaccess">Introduction@Access:~$</h1>
+I"Q<h1 id="introductionaccess">Introduction@Access:~$</h1>
 
 <table>
   <thead>
@@ -123,7 +123,7 @@
 <p><em>User Name:</em> <code class="language-plaintext highlighter-rouge">admin</code> <em>Password:</em> <code class="language-plaintext highlighter-rouge">happyday</code></p>
 
 <hr />
-<p><img src="/assets/img/arctic-hackthebox/shell-page-new-24.png" alt="" /></p>
+<p>![])(/assets/img/arctic-hackthebox/shell-page-new-24.png)</p>
 
 <p>Now running the <code class="language-plaintext highlighter-rouge">Scheduled task</code>.</p>
 

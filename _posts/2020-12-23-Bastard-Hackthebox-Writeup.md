@@ -55,7 +55,7 @@ In this I found `/CHANGELOG.txt` file which showed which version of `Drupal` is 
 ___
 ![](/assets/img/bastard-hackthebox/got-version-name-6.png)
 
-The version installed is `Drupal 7.54`, Searching for vulnerabilities I found this :
+The version installed is `Drupal 7.54`, while searching for vulnerabilities I found this :
 
 ___
 ![](/assets/img/bastard-hackthebox/drupa-exploit-8.png)

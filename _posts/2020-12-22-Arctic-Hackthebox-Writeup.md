@@ -103,7 +103,7 @@ Make sure to fill the **User Name** and **Password** field while scheduling the 
 *User Name:* `admin` *Password:* `happyday`
 
 ___
-![](/assets/img/arctic-hackthebox/shell-page-new-24.png)
+![])(/assets/img/arctic-hackthebox/shell-page-new-24.png)
 
 Now running the `Scheduled task`.
 
