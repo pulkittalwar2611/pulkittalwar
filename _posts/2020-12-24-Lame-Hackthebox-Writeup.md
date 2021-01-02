@@ -1,6 +1,6 @@
 ---
 title: Lame Hackthebox Writeup
-date: 2020-12-23 09:00:00 +0800
+date: 2020-12-24 09:00:00 +0800
 categories: [Hackthebox, Retired]
 tags: [linux,ftp,vsftpc,samba exploit,ftp anonymous login]     # TAG names should always be lowercase
 image: /assets/img/lame-hackthebox/lame-pic.png

