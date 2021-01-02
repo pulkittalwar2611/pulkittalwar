@@ -19,7 +19,7 @@ Points | 20
 Os | Linux
 Difficult | Easy
 Creator | [mrb3n](https://www.hackthebox.eu/profile/2984)
-Out on |  September 2017
+Out on | 30th September 2017
 
 # Summary:~$
 

