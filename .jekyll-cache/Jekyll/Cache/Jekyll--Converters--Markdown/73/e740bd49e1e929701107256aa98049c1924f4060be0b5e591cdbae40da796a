@@ -1,4 +1,4 @@
-I"º<h1 id="introductionlame">Introduction@Lame:~$</h1>
+I"Æ<h1 id="introductionshocker">Introduction@Shocker:~$</h1>
 
 <table>
   <thead>
@@ -34,7 +34,7 @@
     </tr>
     <tr>
       <td>Out on</td>
-      <td>September 2017</td>
+      <td>30th September 2017</td>
     </tr>
   </tbody>
 </table>
@@ -121,7 +121,7 @@
 <hr />
 <p><img src="/assets/img/shocker-hackthebox/sudo-perl-13.png" alt="" /></p>
 
-<p>Running the above mentioned command we got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+<p>Running the above mentioned command, we got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
 
 <hr />
 <p><img src="/assets/img/shocker-hackthebox/got-root-14.png" alt="" /></p>
