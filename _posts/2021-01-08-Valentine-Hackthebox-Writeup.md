@@ -1,5 +1,5 @@
 ---
-title: Cronos Hackthebox Writeup
+title: Valentine Hackthebox Writeup
 date: 2021-01-08 04:00:00 +0800
 categories: [Hackthebox, Retired]
 tags: [linux,ssl,ssl heartbleed,hex encode,tmux]     # TAG names should always be lowercase
