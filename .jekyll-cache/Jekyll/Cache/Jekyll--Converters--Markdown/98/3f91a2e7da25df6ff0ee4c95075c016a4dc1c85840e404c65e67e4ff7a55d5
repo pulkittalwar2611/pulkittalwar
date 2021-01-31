@@ -1,0 +1,82 @@
+I"a<h1 id="introductionblue">Introduction@Blue:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Blue</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.40</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Windows</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Easy</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/home/users/profile/1">ch4p</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>28th June 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li>While scanning found a <code class="language-plaintext highlighter-rouge">RCE</code> Vulnerability on SMB.</li>
+  <li>Using <code class="language-plaintext highlighter-rouge">ms17_010_eternalblue</code> module from <code class="language-plaintext highlighter-rouge">Metasploit</code> to get root directly.</li>
+</ul>
+
+<h1 id="starting">Starting:~$</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>Using <code class="language-plaintext highlighter-rouge">Nmap</code> to scan the host.</p>
+
+<p><strong>Command</strong>: <em>nmap -sV -T4 -Pn –script vuln 10.10.10.40</em></p>
+
+<hr />
+
+<p><img src="/assets/img/blue-hackthebox/nmap-scan-1.png" alt="" /></p>
+
+<p>It shows port 445 i.e. <code class="language-plaintext highlighter-rouge">smb</code> is vulnerable to remote code execution with <code class="language-plaintext highlighter-rouge">smb-vuln-ms17-010</code>.</p>
+
+<p>Let’s use <code class="language-plaintext highlighter-rouge">Metasploit</code> for this exploit.</p>
+
+<hr />
+
+<p><img src="/assets/img/blue-hackthebox/metasploit-exploit-2.png" alt="" /></p>
+
+<p>Following are the options I used to exploit the machine:</p>
+
+<hr />
+
+<p><img src="/assets/img/blue-hackthebox/show-options-3.png" alt="" /></p>
+
+<p>Got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+
+<hr />
+
+<p><img src="/assets/img/blue-hackthebox/got-root-3.png" alt="" /></p>
+
+:ET
