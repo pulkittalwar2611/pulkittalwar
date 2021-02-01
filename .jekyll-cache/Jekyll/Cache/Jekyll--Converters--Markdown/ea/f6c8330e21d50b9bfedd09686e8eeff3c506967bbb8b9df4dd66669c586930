@@ -1,4 +1,4 @@
-I"L<h1 id="introductiongranny">Introduction@Granny:~$</h1>
+I"T<h1 id="introductiongranny">Introduction@Granny:~$</h1>
 
 <table>
   <thead>
@@ -57,11 +57,13 @@
 <p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/nmap-automator-1.png" alt="" /></p>
 
 <p>Let’s access <code class="language-plaintext highlighter-rouge">Port 80</code>.</p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/port-80-2.png" alt="" /></p>
 
 <p>I straight jumped to what I saw i.e. the <code class="language-plaintext highlighter-rouge">HTTP Methods allowed</code>, in which <em>PUT</em> and <em>MOVE</em> were one of them.</p>
@@ -71,6 +73,7 @@
 <p><strong>Command</strong>: <em>davtest -url http://10.10.10.15</em></p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/davtest-command-4.png" alt="" /></p>
 
 <p>It doesn’t allow <code class="language-plaintext highlighter-rouge">aspx</code> and <code class="language-plaintext highlighter-rouge">asp</code> but allows <code class="language-plaintext highlighter-rouge">txt</code>.</p>
@@ -86,6 +89,7 @@
 <p><strong>MOVE command</strong>: <em>curl -X MOVE –header ‘Destination:http://10.10.10.15/shell.aspx’ http://10.10.10.15/shell.txt</em></p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/msfvenom-commands-2.png" alt="" /></p>
 
 <p>Accessing <code class="language-plaintext highlighter-rouge">http://10.10.10.15/shell.aspx</code> and listening on <code class="language-plaintext highlighter-rouge">multi/handler</code> on metasploit.</p>
@@ -93,25 +97,30 @@
 <p><strong>Metasploit command</strong>:</p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/meterpreter-shell-1.png" alt="" /></p>
 
 <p>Getting shell:</p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/got-shell-3.png" alt="" /></p>
 
 <p>I used <code class="language-plaintext highlighter-rouge">local_exploit_sugester</code> on metasploit to escalate the privileges.</p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/exploit-suggester-4.png" alt="" /></p>
 
-<p>I used <code class="language-plaintext highlighter-rouge">windows/local/ms15_051_client_copy_image</code>.</p>
+<p>Using <code class="language-plaintext highlighter-rouge">windows/local/ms15_051_client_copy_image</code>.</p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/escalating-privs-5.png" alt="" /></p>
 
 <p>Got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
 
 <hr />
+
 <p><img src="/assets/img/granny-hackthebox/got-root-6.png" alt="" /></p>
 :ET

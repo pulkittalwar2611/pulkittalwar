@@ -1,0 +1,17 @@
+1.nmap automator --> 
+2.we have PUT and RENAME as potential risky methods.
+3.using davtest to check the extensions allowed.
+davtest -url 10.10.10.14
+4.None of the test case matches
+5.using metasploit to check for microsoft IIS 6.0
+6.command --> searchsploit Microsfot IIS 6 
+--> Microsoft IIS 6.0 - WebDAV 'ScStoragePathFromUrl' Remote Buffer Overflow| windows/remote/41738.py
+8.using this --> exploit/windows/iis/iis_webdav_scstoragepathfromurl
+9.got shell
+getuid --> not working
+ps and then migrating to new process
+10.using --> post/multi/recon/local_exploit_suggester
+11.
+using --> exploit/windows/local/ms14_070_tcpip_ioctl
+12.Got shell
+
