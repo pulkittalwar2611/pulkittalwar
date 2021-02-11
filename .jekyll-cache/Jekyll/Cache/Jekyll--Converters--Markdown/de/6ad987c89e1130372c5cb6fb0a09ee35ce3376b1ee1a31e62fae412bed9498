@@ -1,0 +1,121 @@
+I"B<h1 id="introductionoptimum">Introduction@Optimum:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Optimum</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.8</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Windows</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Low</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/home/users/profile/1">cha4p</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>18th March 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li>Getting user shell by exploiting <code class="language-plaintext highlighter-rouge">HttpFileServer httpd 2.3</code> which is vulnerable to RCE.</li>
+  <li>Using <em>Windows Exploit Suggester</em> to get <code class="language-plaintext highlighter-rouge">Root</code>.</li>
+</ul>
+
+<h1 id="starting">Starting:~$</h1>
+
+<h2 id="nmap">Nmap</h2>
+
+<p>Using <code class="language-plaintext highlighter-rouge">Nmap</code> to scan the host.</p>
+
+<p><strong>Command</strong>: <em>nmap -p- -sV -T4 –script vuln 10.10.10.8</em></p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/nmap-scan-1.png" alt="" /></p>
+
+<p>Accessing <code class="language-plaintext highlighter-rouge">Port 80</code>  , We got this</p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/port-80-2.png" alt="" /></p>
+
+<p>There is a login page too, I tried few default credentials but didn’t work.</p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/login-page-3.png" alt="" /></p>
+
+<p>Checking any vulnerabilities or exploits available for <code class="language-plaintext highlighter-rouge">HttpFileServer httpd 2.3</code>.</p>
+
+<p>We got an exploit for this version on <a href="https://www.exploit-db.com/exploits/39161">exploitdb</a>.</p>
+
+<p>Changing <code class="language-plaintext highlighter-rouge">LHOST</code> and <code class="language-plaintext highlighter-rouge">LPORT</code> in the script. It is also mentioned to host <code class="language-plaintext highlighter-rouge">nc.exe</code> locally on port <em>80</em>.</p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/got-shell-4.png" alt="" /></p>
+
+<p>We got shell as <code class="language-plaintext highlighter-rouge">kostas</code>.</p>
+
+<p>Let’s gather <code class="language-plaintext highlighter-rouge">systeminfo</code> for Privilege Escalation.</p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/systeminfo-ss-5.png" alt="" /></p>
+
+<p>Feeding the above information to <code class="language-plaintext highlighter-rouge">windows exploit suggester</code> which I had downloaded on my machine.</p>
+
+<p>Download link : <a href="https://github.com/AonCyberLabs/Windows-Exploit-Suggester">windows-exploit-suggester</a></p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/explooit-1.png" alt="" /></p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/exploit-2.png" alt="" /></p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/exploit-3.png" alt="" /></p>
+
+<p>Using <code class="language-plaintext highlighter-rouge">MS16-098</code> to escalate privileges.</p>
+
+<p><a href="https://www.exploit-db.com/exploits/41020">Exploitdb link</a></p>
+
+<p><a href="https://github.com/offensive-security/exploitdb-bin-sploits/raw/master/bin-sploits/41020.exe">exe file</a></p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/priv-esc-6.png" alt="" /></p>
+
+<p>Downloading the exploit on <em>vulnerable machine</em> using <code class="language-plaintext highlighter-rouge">powershell</code>.</p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/downloading-exploit-privsec-7.png" alt="" /></p>
+
+<p><strong>Hosting Command</strong>: <em>sudo python3 -m http.server 80</em></p>
+
+<p>After running the <code class="language-plaintext highlighter-rouge">exploit</code>, we got <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+
+<hr />
+<p><img src="/assets/img/optimum-hackthebox/got-root-9.png" alt="" /></p>
+
+:ET

