@@ -1,4 +1,4 @@
-I"Î"<h1 id="introductionhawk">Introduction@Hawk:~$</h1>
+I"Ì"<h1 id="introductionhawk">Introduction@Hawk:~$</h1>
 
 <table>
   <thead>
@@ -46,7 +46,7 @@
   <li>Decrypting a file found by logging into <code class="language-plaintext highlighter-rouge">ftp</code> using <em>anonymous</em>:<em>anonymous</em>.</li>
   <li>Logging into the <code class="language-plaintext highlighter-rouge">drupal</code> cms.</li>
   <li>Getting reverse shell using the <code class="language-plaintext highlighter-rouge">php filter</code> module.</li>
-  <li>Escalating privileges using <code class="language-plaintext highlighter-rouge">h2</code> exploit.</li>
+  <li>Escalating privileges using <code class="language-plaintext highlighter-rouge">H2</code> exploit.</li>
 </ul>
 
 <h1 id="starting">Starting:~$</h1>
@@ -105,7 +105,7 @@
 <hr />
 <p><img src="/assets/img/hawk-hackthebox/file-category-8.png" alt="" /></p>
 
-<p>Itâ€™s a <code class="language-plaintext highlighter-rouge">openssl</code> and <code class="language-plaintext highlighter-rouge">base64</code> encrypted.</p>
+<p>Itâ€™s <code class="language-plaintext highlighter-rouge">openssl</code> and <code class="language-plaintext highlighter-rouge">base64</code> encrypted.</p>
 
 <p>Letâ€™s decode it with base64 first.</p>
 

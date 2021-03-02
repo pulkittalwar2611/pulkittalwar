@@ -1,0 +1,128 @@
+I"#<h1 id="introductionmirai">Introduction@Mirai:~$</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>Mirai</td>
+    </tr>
+    <tr>
+      <td>IP</td>
+      <td>10.10.10.48</td>
+    </tr>
+    <tr>
+      <td>Points</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <td>Os</td>
+      <td>Linux</td>
+    </tr>
+    <tr>
+      <td>Difficult</td>
+      <td>Easy</td>
+    </tr>
+    <tr>
+      <td>Creator</td>
+      <td><a href="https://www.hackthebox.eu/profile/2904">Arrexel</a></td>
+    </tr>
+    <tr>
+      <td>Out on</td>
+      <td>1st September 2017</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="summary">Summary:~$</h1>
+
+<ul>
+  <li>Discovering the new host and scanning for open ports.</li>
+  <li>Found <code class="language-plaintext highlighter-rouge">/admin</code> pannel on port 80 i.ee <em>pi-hole</em>.</li>
+  <li>Found default ssh credentials as <code class="language-plaintext highlighter-rouge">pi:raspberry</code>.</li>
+  <li>Got <code class="language-plaintext highlighter-rouge">Root</code> as all permissions are permitted.</li>
+</ul>
+
+<h1 id="starting">Starting:~$</h1>
+
+<p>I have used <strong>nmapAutomator</strong> , which keeps the scanning fast and reduces effort.<em>(Not recommended in real life scenarios).</em></p>
+
+<p>Download link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
+
+<p><strong>Nmap Full Port Scan</strong>: <em>nmap -sV -p- -T4 -Pn 10.10.10.48</em></p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/nmap-full-scan-1.png" alt="" /></p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/nmap-automator-1.png" alt="" /></p>
+
+<p>Checking <code class="language-plaintext highlighter-rouge">Port 80</code>.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/port-80-2.png" alt="" /></p>
+
+<p>As the website is not loading, I randomly checked <code class="language-plaintext highlighter-rouge">/admin</code> and found pi-hole dashboard:</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/port-80-admin-3.png" alt="" /></p>
+
+<p>I checked <code class="language-plaintext highlighter-rouge">Port 32400</code> and found a <code class="language-plaintext highlighter-rouge">plex</code> login page.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/port-32400-plex-4.png" alt="" /></p>
+
+<p>I tried signing up to plex but it didn’t work.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/signup-plex-5.png" alt="" /></p>
+
+<p>After that I checked for <code class="language-plaintext highlighter-rouge">pi-hole</code> default credentials and found <a href="https://www.reddit.com/r/pihole/comments/6eqyw4/pihole_ssh_login/">this</a></p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/found-ssh-creds-6.png" alt="" /></p>
+
+<p>Logging into <code class="language-plaintext highlighter-rouge">ssh</code> using these credentials i.e. <code class="language-plaintext highlighter-rouge">pi</code>:<code class="language-plaintext highlighter-rouge">raspberry</code>.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/ssh-login-7.png" alt="" /></p>
+
+<p>For <code class="language-plaintext highlighter-rouge">Privilege Escalation</code>, I used <em>sudo -l</em> command.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/priv-esc-8.png" alt="" /></p>
+
+<p>All the commands can be run as <code class="language-plaintext highlighter-rouge">Root</code>.</p>
+
+<p>Got Root.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/root-9.png" alt="" /></p>
+
+<p>We couldn’t find the <code class="language-plaintext highlighter-rouge">root.txt</code> flag.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/finding-root-flag-10.png" alt="" /></p>
+
+<p>Let’s check the USB drive.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/deleted-files-11.png" alt="" /></p>
+
+<p>Now I googled a bit and found that <code class="language-plaintext highlighter-rouge">/dev/sdb</code> folder is external storage for raspverry pi.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/sdb-files-for-raspberry-pi-12.png" alt="" /></p>
+
+<p>Used <code class="language-plaintext highlighter-rouge">cat</code> command but it showed unreadable content so I used <code class="language-plaintext highlighter-rouge">strings</code> command.</p>
+
+<hr />
+<p><img src="/assets/img/mirai-hackthebox/strings-sbd-13.png" alt="" /></p>
+
+<p>Got the Root flag.</p>
+:ET
