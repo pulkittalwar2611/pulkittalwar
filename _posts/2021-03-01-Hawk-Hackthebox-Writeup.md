@@ -27,7 +27,7 @@ Out on | 14th July 2018
 * Decrypting a file found by logging into `ftp` using *anonymous*:*anonymous*.
 * Logging into the `drupal` cms.
 * Getting reverse shell using the `php filter` module.
-* Escalating privileges using `h2` exploit.
+* Escalating privileges using `H2` exploit.
 
 # Starting:~$
 
@@ -85,7 +85,7 @@ As we know it's encrypted I ran `file` command on it to check for more details.
 ___
 ![](/assets/img/hawk-hackthebox/file-category-8.png)
 
-It's a `openssl` and `base64` encrypted.
+It's `openssl` and `base64` encrypted.
 
 Let's decode it with base64 first.
 
