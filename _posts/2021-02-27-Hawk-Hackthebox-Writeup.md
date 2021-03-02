@@ -1,6 +1,6 @@
 ---
 title: Hawk Hackthebox Writeup
-date: 2021-01-28 11:00:00 +0530
+date: 2021-01-27 11:00:00 +0530
 categories: [Hackthebox, Retired]
 tags: [linux,h2 exploit,drupal,ftp anonymous,php filter module]     # TAG names should always be lowercase
 image: /assets/img/hawk-hackthebox/hawk-pic.png
