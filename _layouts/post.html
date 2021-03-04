@@ -10,6 +10,7 @@ layout: default
 <div class="row">
 
   <div id="post-wrapper" class="col-12 col-lg-11 col-xl-8">
+    {% include advertisements.html %}
 
     <div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4">
 
@@ -17,6 +18,7 @@ layout: default
 
       <div class="post-meta text-muted d-flex flex-column">
         <!-- Published date and author -->
+        
         <div>
           Posted
           {% include timeago.html date=page.date tooltip=true %}
