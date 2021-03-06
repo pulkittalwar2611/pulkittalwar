@@ -19,6 +19,8 @@ description: >-                        # used by seo meta and the atom feed
 # fill in the base hostname & protocol for your site, e.g., 'https://username.github.io'
 url: 'https://pulkittalwar2611.github.io/pulkittalwar'
 
+site: 'https://pulkittalwar2611.github.io/pulkittalwar'
+
 author: Pulkit Talwar                  # change to your full name
 
 avatar: /assets/img/luanne-hackthebox/rem-avatar.JPG  # support internet resources
