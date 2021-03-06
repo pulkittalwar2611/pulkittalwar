@@ -2,4 +2,4 @@ User-agent: *
 
 Disallow: /norobots/
 
-Sitemap: https://pulkittalwar2611.github.io//sitemap.xml
+Sitemap: https://pulkittalwar2611.github.io/pulkittalwar/sitemap.xml
